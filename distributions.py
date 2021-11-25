@@ -39,7 +39,25 @@ def erdos_renyi_graph(num_nodes, prob, directed=False, rng=None):
 
 
 def barabasi_albert(num_nodes, num_edges, rng=None):
+    """
+    Returns a graph sampled from the Barabasi-Albert (BA) model. The graph is built
+    incrementally by adding `num_edges` arcs from a new node to already existing ones with
+    preferential attachment towards nodes with high degree.
 
+    Parameters
+    ----------
+    num_nodes : Int
+        The number of nodes
+    num_edges : Int
+        Number of edges to add from a new node to existing ones.
+    rng : np.random.Generator, optional
+        Numpy random number generator, by default None
+
+    Returns
+    -------
+    np.ndarray
+        The BA graph (num_edges x 2)
+    """
     assert num_edges > 0 and num_edges < num_nodes
 
     if rng is None:
@@ -61,10 +79,22 @@ def barabasi_albert(num_nodes, num_edges, rng=None):
     return coalesce(edge_list)
 
 def clique(num_nodes):
+    """
+    Returns a complete graph, a.k.a. a clique.
+
+    Parameters
+    ----------
+    num_nodes : Int
+        The number of nodes in the graph
+
+    Returns
+    -------
+    np.ndarray
+        The complete graph (num_edges x 2)
+    """
     edge_list = np.array(list(combinations(range(num_nodes), r=2)))
     edge_list = to_undirected(edge_list)
     return coalesce(edge_list)
-
 
 def stochastic_block_model(block_sizes, probs, generator, rng=None):
     """
