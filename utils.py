@@ -1,4 +1,5 @@
 import numpy as np
+from numpy.typing import NDArray
 
 
 def to_dense(adj, num_nodes=None):
@@ -27,20 +28,57 @@ def to_dense(adj, num_nodes=None):
 
     return dense_adj
 
-
-def dense(generator):
+def to_undirected(edge_list: NDArray):
     """
-    Compute the squared adjacency matrix of a generated graph
+    Turns a directed edge_list into a non-directed one
 
     Parameters
     ----------
-    generator : Callable
-        A callable that generates the graphs
+    edge_list : NDArray
+        A directed edge list
 
     Returns
     -------
     np.ndarray
-        The squared adjacency matrix (num_nodes x num_nodes)
+        An undirected edge list
+    """
+    sources, targets = edge_list[:, 0], edge_list[:, 1]
+    sources, targets = sources.reshape((-1, 1)), targets.reshape((-1, 1))
+
+    new_edges = np.concatenate((targets, sources), axis=1)
+    edge_list = np.concatenate((edge_list, new_edges), axis=0)
+
+    return edge_list
+
+def coalesce(edge_list: NDArray):
+    """
+    Polishes an edge list by removing duplicates and by sorting the edges
+
+    Parameters
+    ----------
+    edge_list : NDArray
+        An edge list
+
+    Returns
+    -------
+    edge_list
+        A sorted edge list with no duplicated edges
+    """
+    return np.unique(edge_list, axis=0)
+
+def dense(generator):
+    """
+    Transforms a sparse generator into its dense version
+
+    Parameters
+    ----------
+    generator : Callable
+        A callable that generates graphs
+
+    Returns
+    -------
+    Callable
+        A callable that generates the squared adjacency matrix (num_nodes x num_nodes) of a graph
     """
     return lambda *args: to_dense(generator(*args))
 
@@ -69,4 +107,7 @@ def remove_self_loops(adj):
         # The case of a squared dense adj matrix
         return adj * (1 - np.eye(row, col, dtype=np.bool8))
 
-    raise NotImplementedError()
+    sources, targets = adj[:, 0], adj[:, 1]
+    mask = ~(sources == targets)
+
+    return adj[mask]

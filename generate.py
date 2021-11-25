@@ -1,5 +1,6 @@
 import numpy as np
-from utils import remove_self_loops
+from utils import remove_self_loops, to_undirected, coalesce
+from itertools import combinations
 
 
 def erdos_renyi_graph(num_nodes, prob, directed=False, rng=None):
@@ -33,7 +34,36 @@ def erdos_renyi_graph(num_nodes, prob, directed=False, rng=None):
 
     mask = remove_self_loops(mask)
 
-    return np.argwhere(mask)
+    edge_list = np.argwhere(mask)
+    return edge_list
+
+
+def barabasi_albert(num_nodes, num_edges, rng=None):
+
+    assert num_edges > 0 and num_edges < num_nodes
+
+    if rng is None:
+        rng = np.random.default_rng()
+
+    sources, targets = np.arange(num_edges), rng.permutation(num_edges)
+
+    for i in range(num_edges, num_nodes):
+        sources = np.concatenate([sources, np.full((num_edges, ), i, dtype=np.long)])
+        choice = rng.choice(np.concatenate([sources, targets]), num_edges)
+        targets = np.concatenate([targets, choice])
+
+    sources, targets = sources.reshape((-1, 1)), targets.reshape((-1, 1))
+    edge_list = np.concatenate([sources, targets], axis=1)
+
+    edge_list = remove_self_loops(edge_list)
+    edge_list = to_undirected(edge_list)
+
+    return coalesce(edge_list)
+
+def clique(num_nodes):
+    edge_list = np.array(list(combinations(range(num_nodes), r=2)))
+    edge_list = to_undirected(edge_list)
+    return coalesce(edge_list)
 
 
 def stochastic_block_model(block_sizes, probs, generator, rng=None):
@@ -115,7 +145,7 @@ def full_grid(height, width):
         The full two-dimensional rectangular grid lattice graph (num_edges x 2)
     """
     w = width
-    kernel = np.array([-w - 1, -1, w - 1, -w, w, -w + 1, 1, w + 1])
+    kernel = np.array([-w - 1, -w, -w + 1, -1, w, w - 1, w, w + 1])
     return grid(height, width, kernel)
 
 
@@ -140,7 +170,7 @@ def simple_grid(height, width):
         The two-dimensional rectangular grid lattice graph (num_edges x 2)
     """
     w = width
-    kernel = np.array([-1, -w, w, 1])
+    kernel = np.array([-w, -1, 1, w])
     return grid(height, width, kernel)
 
 
@@ -170,14 +200,7 @@ def grid(height, width, kernel):
     mask = (targets >= 0) & (targets < num_nodes)
 
     sources, targets = sources[mask].reshape((-1, 1)), targets[mask].reshape((-1, 1))
-    edges = np.concatenate([sources, targets], axis=1)
-
-    bounds = np.arange(width-1, num_nodes-1, width, dtype=np.long)
-    bounds = bounds.reshape((-1, 1))
-    bounds = np.concatenate(
-        [bounds, bounds + 1],
-        axis=1
-    )
+    edge_list = np.concatenate([sources, targets], axis=1)
 
     # Remove edges (u,v) from a boundary node to the first node of the new row.
     submask_1 = ((edges[:, 0] + 1) % width == 0) & ((edges[:, 1]) % width == 0)
@@ -186,4 +209,4 @@ def grid(height, width, kernel):
 
     mask = ~(submask_1 | submask_2)
 
-    return edges[mask]
+    return edge_list[mask]
