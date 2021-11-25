@@ -64,7 +64,7 @@ def stochastic_block_model(block_sizes, probs, generator, rng=None):
     if rng is None:
         rng = np.random.default_rng()
 
-    communities = [generator(b, probs[i][i], rng=rng) for i, b in enumerate(block_sizes)]
+    communities = [generator(b, probs[i][i], rng) for i, b in enumerate(block_sizes)]
 
     # Update communities's indices
     sizes = {}
