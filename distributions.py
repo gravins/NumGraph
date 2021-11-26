@@ -7,7 +7,7 @@ from numpy.random import Generator, default_rng
 from utils import remove_self_loops, to_undirected, coalesce
 
 
-def erdos_renyi_graph(num_nodes: int, prob: float, directed: bool = False, 
+def erdos_renyi(num_nodes: int, prob: float, directed: bool = False, 
                       rng: Optional[Generator] = None) -> NDArray:
     """
     Returns a random graph, also known as an Erdos-Renyi graph or a binomial graph.
@@ -246,9 +246,9 @@ def grid(height: int, width: int, kernel: NDArray) -> NDArray:
     edge_list = np.concatenate([sources, targets], axis=1)
 
     # Remove edges (u,v) from a boundary node to the first node of the new row.
-    submask_1 = ((edges[:, 0] + 1) % width == 0) & ((edges[:, 1]) % width == 0)
+    submask_1 = ((edge_list[:, 0] + 1) % width == 0) & ((edge_list[:, 1]) % width == 0)
     # As the graph is undirected, remove the corresponding edges (v, u).
-    submask_2 = ((edges[:, 0]) % width == 0) & ((edges[:, 1] + 1) % width == 0)
+    submask_2 = ((edge_list[:, 0]) % width == 0) & ((edge_list[:, 1] + 1) % width == 0)
 
     mask = ~(submask_1 | submask_2)
 
