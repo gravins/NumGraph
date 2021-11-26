@@ -1,21 +1,21 @@
-import numpy as np
 from numpy.typing import NDArray
+import numpy as np
 
 
-def to_dense(adj, num_nodes=None):
+def to_dense(adj: NDArray, num_nodes: int = None) -> NDArray:
     """
     Converts a list of edges in a squared adjacency matrix
 
     Parameters
     ----------
-    adj : np.ndarray
+    adj : NDArray
         The list of edges (num_edges x 2)
     num_nodes : int, optional
         The number of nodes in the graph, by default None
 
     Returns
     -------
-    np.ndarray
+    NDArray
         The squared adjacency matrix (num_nodes x num_nodes)
     """
     if not num_nodes:
@@ -28,19 +28,19 @@ def to_dense(adj, num_nodes=None):
 
     return dense_adj
 
-def to_undirected(edge_list: NDArray):
+def to_undirected(edge_list: NDArray) -> NDArray:
     """
     Turns a directed edge_list into a non-directed one
 
     Parameters
     ----------
     edge_list : NDArray
-        A directed edge list
+        A directed edge list (num_edges x 2)
 
     Returns
     -------
-    np.ndarray
-        An undirected edge list
+    NDArray
+        An undirected edge list ((2*num_edges) x 2)
     """
     sources, targets = edge_list[:, 0], edge_list[:, 1]
     sources, targets = sources.reshape((-1, 1)), targets.reshape((-1, 1))
@@ -50,19 +50,19 @@ def to_undirected(edge_list: NDArray):
 
     return edge_list
 
-def coalesce(edge_list: NDArray):
+def coalesce(edge_list: NDArray) -> NDArray:
     """
     Polishes an edge list by removing duplicates and by sorting the edges
 
     Parameters
     ----------
     edge_list : NDArray
-        An edge list
+        An edge list (num_edges x 2)
 
     Returns
     -------
-    edge_list
-        A sorted edge list with no duplicated edges
+    NDArray
+        A sorted edge list with no duplicated edges (new_num_edges x 2)
     """
     return np.unique(edge_list, axis=0)
 
@@ -83,19 +83,19 @@ def dense(generator):
     return lambda *args: to_dense(generator(*args))
 
 
-def remove_self_loops(adj):
+def remove_self_loops(adj: NDArray) -> NDArray:
     """
     Removes every self-loop in the graph given by adj
 
     Parameters
     ----------
-    adj : np.ndarray
-        The adjancency matrix
+    adj : NDArray
+        The adjancency matrix (num_edges x 2)
 
     Returns
     -------
-    np.ndarray
-        The list of edges without self-loops (num_edges x 2)
+    NDAarray
+        The list of edges without self-loops (new_num_edges x 2)
 
     Raises
     ------
