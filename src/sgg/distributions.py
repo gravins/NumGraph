@@ -4,10 +4,10 @@ from numpy.typing import NDArray
 from itertools import combinations
 from typing import List, Callable, Optional
 from numpy.random import Generator, default_rng
-from utils import remove_self_loops, to_undirected, coalesce
+from sgg.utils import remove_self_loops, to_undirected, coalesce
 
 
-def erdos_renyi(num_nodes: int, prob: float, directed: bool = False, 
+def erdos_renyi(num_nodes: int, prob: float, directed: bool = False,
                       rng: Optional[Generator] = None) -> NDArray:
     """
     Returns a random graph, also known as an Erdos-Renyi graph or a binomial graph.
@@ -276,7 +276,7 @@ def star(num_nodes: int, directed: bool = False) -> NDArray:
 
     if not directed:
         edges = to_undirected(edges)
-    
+
     return edges
 
 
@@ -323,5 +323,5 @@ def random_tree(num_nodes: int, directed: bool = True, rng: Optional[Generator] 
 
     if not directed:
         edges = to_undirected(edges)
-    
+
     return edges
