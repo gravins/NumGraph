@@ -1,7 +1,9 @@
-[pypi-image]: https://github.com/gravins/NumGraph/img/NumGraph_logo.svg
+[pypi-image]: https://github.com/gravins/NumGraph/blob/main/img/NumGraph_logo.svg
 [pypi-url]: https://pypi.org/project/numgraph/
 
-![](https://github.com/gravins/NumGraph/img/NumGraph_logo.svg)
+<p align="center">
+  <img width="30%" src="https://github.com/gravins/NumGraph/blob/main/img/NumGraph_logo.svg" />
+</p>
 
 
 # NumGraph
