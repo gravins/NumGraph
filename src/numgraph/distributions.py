@@ -4,7 +4,7 @@ from numpy.typing import NDArray
 from itertools import combinations
 from typing import List, Callable, Optional
 from numpy.random import Generator, default_rng
-from sgg.utils import remove_self_loops, to_undirected, coalesce
+from numgraph.utils import remove_self_loops, to_undirected, coalesce
 
 
 def erdos_renyi(num_nodes: int, prob: float, directed: bool = False,
