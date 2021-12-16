@@ -18,7 +18,7 @@ Numpy library for synthetic graph generation.
 - Erdos Renyi
 - Barabasi Albert
 - Stochastic Block Model
-- susceptible-Infected Dissemination Process Simulation
+- Susceptible-Infected Dissemination Process Simulation
 
 ## Installation
 
