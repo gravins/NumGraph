@@ -8,7 +8,6 @@ print('Susceptible-Infected')
 num_nodes = 15
 generator = lambda _: clique(num_nodes)
 pos = nx.shell_layout(nx.from_edgelist(clique(num_nodes)))
-print(pos)
 
 snapshots, xs = susceptible_infected(generator, prob=0.4, mask_size=0.8, t_max = 100)
 
