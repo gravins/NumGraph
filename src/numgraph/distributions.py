@@ -8,7 +8,7 @@ from numgraph.utils import remove_self_loops, to_undirected, coalesce
 
 
 def erdos_renyi(num_nodes: int, prob: float, directed: bool = False,
-                      rng: Optional[Generator] = None) -> NDArray:
+                rng: Optional[Generator] = None) -> NDArray:
     """
     Returns a random graph, also known as an Erdos-Renyi graph or a binomial graph.
     The model chooses each of the possible edges with a defined probability.
@@ -271,7 +271,7 @@ def star(num_nodes: int, directed: bool = False) -> NDArray:
     NDArray
         The star graph (num_edges x 2)
     """
-    edges = np.stack([np.zeros((num_nodes - 1, )), np.arange(1, num_nodes)],
+    edges = np.stack([np.zeros((num_nodes - 1, ), dtype = int), np.arange(1, num_nodes)],
                       axis=1)
 
     if not directed:

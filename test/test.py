@@ -64,4 +64,4 @@ print('Random tree')
 num_nodes = 10
 G = random_tree(num_nodes, rng = default_rng(seed))
 G = nx.from_edgelist(G)
-plot_tree(G)
+plot_tree_on_terminal(G)

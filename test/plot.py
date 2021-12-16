@@ -17,8 +17,7 @@ def plot_er(G, n):
     """
     # Put the nodes in a circular shape
     pos = nx.circular_layout(G)
-    #pos = nx.spring_layout(G, iterations=50, seed=42)
-    nx.draw(G, pos) #, node_color=range(25), node_size=400, cmap=plt.cm.Blues)
+    nx.draw(G, pos)
     plt.show()
 
 
@@ -55,7 +54,7 @@ def plot_ba(G, seed):
     plt.show()
 
 
-def plot_tree(G):
+def plot_tree_on_terminal(G):
     """
     Plots the random tree graph
 
@@ -103,6 +102,6 @@ def plot_grid(G):
     G: nx.Graph
       The simple grid graph
     """
-    pos = nx.spring_layout(G, iterations=100, seed=39775)
+    pos = nx.spring_layout(G, iterations=100, seed=9)
     nx.draw(G, pos)
     plt.show()
