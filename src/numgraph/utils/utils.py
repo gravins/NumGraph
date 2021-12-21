@@ -1,4 +1,5 @@
 from numpy.typing import NDArray
+from numpy.random import default_rng
 import numpy as np
 
 
@@ -81,6 +82,39 @@ def dense(generator):
         A callable that generates the squared adjacency matrix (num_nodes x num_nodes) of a graph
     """
     return lambda *args: to_dense(generator(*args))
+
+def weighted(generator, low=0.0, high=1.0, rng=None):
+    """
+    Takes as input a graph generator and returns a new generator function that outputs weighted graphs. If the generator is dense, the output will be the weighted adjacency matrix. If the generator is sparse, the new function will return a tuple (adj_list, weights).
+
+    Parameters
+    ----------
+    generator : Callable
+        A callable that generates graphs
+
+    Returns
+    -------
+    Callable
+        A callable that generates weighted graphs
+    """
+
+    if rng is None:
+        rng = default_rng()
+
+    def weighted_generator(*args):
+        adj = generator(*args)
+
+        if adj.shape[0] == adj.shape[1]:
+            num_nodes = adj.shape[0]
+            weights = rng.uniform(low=low, high=high, size=(num_nodes, num_nodes))
+            adj = adj.astype(float) * weights
+            return adj
+
+        weights = rng.uniform(low=low, high=high, size=(adj.shape[0], 1))
+
+        return adj, weights
+
+    return weighted_generator
 
 
 def remove_self_loops(adj: NDArray) -> NDArray:

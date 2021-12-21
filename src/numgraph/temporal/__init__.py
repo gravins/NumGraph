@@ -1,0 +1,1 @@
+from .temporal_distributions import susceptible_infected
