@@ -1,4 +1,4 @@
-from numgraph.temporal_distributions import *
+from numgraph.temporal import *
 from numgraph.distributions import *
 import matplotlib.pyplot as plt
 import networkx as nx

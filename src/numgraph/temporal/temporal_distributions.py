@@ -8,7 +8,7 @@ def susceptible_infected(generator: Callable,
                          prob: float = 0.5, 
                          mask_size: float = 0.5, 
                          t_max: Optional[int] = None, 
-                         infected_nodes: Optional[Union[int, float]] = 0.1, 
+                         infected_nodes: Union[int, float] = 0.1, 
                          num_nodes: Optional[int] = None,
                          rng: Optional[Generator] = None) -> Tuple:
     """

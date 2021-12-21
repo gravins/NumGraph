@@ -1,5 +1,6 @@
+from typing import Callable, Optional
 from numpy.typing import NDArray
-from numpy.random import default_rng
+from numpy.random import default_rng, Generator
 import numpy as np
 
 
@@ -83,19 +84,34 @@ def dense(generator):
     """
     return lambda *args: to_dense(generator(*args))
 
-def weighted(generator, low=0.0, high=1.0, rng=None):
+def weighted(generator: Callable, low: float = 0.0, high: float = 1.0, 
+             rng: Optional[Generator] = None) -> Callable:
     """
-    Takes as input a graph generator and returns a new generator function that outputs weighted graphs. If the generator is dense, the output will be the weighted adjacency matrix. If the generator is sparse, the new function will return a tuple (adj_list, weights).
+    Takes as input a graph generator and returns a new generator function that outputs weighted 
+    graphs. If the generator is dense, the output will be the weighted adjacency matrix. If the 
+    generator is sparse, the new function will return a tuple (adj_list, weights).
 
     Parameters
     ----------
     generator : Callable
         A callable that generates graphs
+    low : float, optional
+        Lower boundary of the sampling distribution interval, 
+        i.e., interval in [low, high), by default 0.0
+    high : float, optional
+        Upper boundary of the sampling distribution interval, 
+        i.e., interval in [low, high), by default 1.0
+    rng : Generator, optional
+        Numpy random number generator, by default None
 
     Returns
     -------
     Callable
         A callable that generates weighted graphs
+    
+    Examples
+    --------
+    >> weighted(erdos_renyi)(num_nodes=100, prob=0.5)
     """
 
     if rng is None:
