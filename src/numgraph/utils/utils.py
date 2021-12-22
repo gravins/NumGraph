@@ -84,11 +84,11 @@ def dense(generator):
     """
     return lambda *args: to_dense(generator(*args))
 
-def weighted(generator: Callable, low: float = 0.0, high: float = 1.0, 
+def weighted(generator: Callable, low: float = 0.0, high: float = 1.0,
              rng: Optional[Generator] = None) -> Callable:
     """
-    Takes as input a graph generator and returns a new generator function that outputs weighted 
-    graphs. If the generator is dense, the output will be the weighted adjacency matrix. If the 
+    Takes as input a graph generator and returns a new generator function that outputs weighted
+    graphs. If the generator is dense, the output will be the weighted adjacency matrix. If the
     generator is sparse, the new function will return a tuple (adj_list, weights).
 
     Parameters
@@ -96,10 +96,10 @@ def weighted(generator: Callable, low: float = 0.0, high: float = 1.0,
     generator : Callable
         A callable that generates graphs
     low : float, optional
-        Lower boundary of the sampling distribution interval, 
+        Lower boundary of the sampling distribution interval,
         i.e., interval in [low, high), by default 0.0
     high : float, optional
-        Upper boundary of the sampling distribution interval, 
+        Upper boundary of the sampling distribution interval,
         i.e., interval in [low, high), by default 1.0
     rng : Generator, optional
         Numpy random number generator, by default None
@@ -108,7 +108,7 @@ def weighted(generator: Callable, low: float = 0.0, high: float = 1.0,
     -------
     Callable
         A callable that generates weighted graphs
-    
+
     Examples
     --------
     >> weighted(erdos_renyi)(num_nodes=100, prob=0.5)
@@ -117,8 +117,8 @@ def weighted(generator: Callable, low: float = 0.0, high: float = 1.0,
     if rng is None:
         rng = default_rng()
 
-    def weighted_generator(*args):
-        adj = generator(*args)
+    def weighted_generator(*args, **kwargs):
+        adj = generator(*args, **kwargs)
 
         if adj.shape[0] == adj.shape[1]:
             num_nodes = adj.shape[0]
