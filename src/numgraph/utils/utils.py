@@ -82,9 +82,9 @@ def dense(generator):
     Callable
         A callable that generates the squared adjacency matrix (num_nodes x num_nodes) of a graph
     """
-    return lambda *args: to_dense(generator(*args))
+    return lambda (*args, **kwargs): to_dense(generator(*args, **kwargs))
 
-def weighted(generator: Callable, low: float = 0.0, high: float = 1.0,
+def weighted(generator: Callable, directed: bool = False, low: float = 0.0, high: float = 1.0,
              rng: Optional[Generator] = None) -> Callable:
     """
     Takes as input a graph generator and returns a new generator function that outputs weighted
@@ -95,6 +95,8 @@ def weighted(generator: Callable, low: float = 0.0, high: float = 1.0,
     ----------
     generator : Callable
         A callable that generates graphs
+    directed: bool
+        Whether to generate weights for directed graphs
     low : float, optional
         Lower boundary of the sampling distribution interval,
         i.e., interval in [low, high), by default 0.0
@@ -123,12 +125,18 @@ def weighted(generator: Callable, low: float = 0.0, high: float = 1.0,
         if adj.shape[0] == adj.shape[1]:
             num_nodes = adj.shape[0]
             weights = rng.uniform(low=low, high=high, size=(num_nodes, num_nodes))
+
+            if not directed:
+                weights = np.triu(weights)
+                weights = weights + weights.T
+
             adj = adj.astype(float) * weights
             return adj
 
         weights = rng.uniform(low=low, high=high, size=(adj.shape[0], 1))
 
         return adj, weights
+
 
     return weighted_generator
 

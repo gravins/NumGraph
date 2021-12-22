@@ -8,7 +8,7 @@ from numgraph.utils import remove_self_loops, to_undirected, coalesce
 
 
 def erdos_renyi(num_nodes: int, prob: float, directed: bool = False,
-                rng: Optional[Generator] = None) -> NDArray:
+                weighted: bool = True, rng: Optional[Generator] = None) -> NDArray:
     """
     Returns a random graph, also known as an Erdos-Renyi graph or a binomial graph.
     The model chooses each of the possible edges with a defined probability.
