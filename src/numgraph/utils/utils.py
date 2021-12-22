@@ -82,7 +82,7 @@ def dense(generator):
     Callable
         A callable that generates the squared adjacency matrix (num_nodes x num_nodes) of a graph
     """
-    return lambda (*args, **kwargs): to_dense(generator(*args, **kwargs))
+    return lambda *args, **kwargs: to_dense(generator(*args, **kwargs))
 
 def weighted(generator: Callable, directed: bool = False, low: float = 0.0, high: float = 1.0,
              rng: Optional[Generator] = None) -> Callable:
