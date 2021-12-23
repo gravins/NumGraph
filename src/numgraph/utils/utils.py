@@ -4,13 +4,13 @@ from numpy.random import default_rng, Generator
 import numpy as np
 
 
-def to_dense(adj: NDArray, num_nodes: int = None) -> NDArray:
+def to_dense(edge_list: NDArray, num_nodes: int = None) -> NDArray:
     """
     Converts a list of edges in a squared adjacency matrix
 
     Parameters
     ----------
-    adj : NDArray
+    edge_list : NDArray
         The list of edges (num_edges x 2)
     num_nodes : int, optional
         The number of nodes in the graph, by default None
@@ -21,14 +21,34 @@ def to_dense(adj: NDArray, num_nodes: int = None) -> NDArray:
         The squared adjacency matrix (num_nodes x num_nodes)
     """
     if not num_nodes:
-        num_nodes = np.max(adj) + 1
+        num_nodes = np.max(edge_list) + 1
 
     dense_adj = np.zeros((num_nodes, num_nodes))
 
-    for i, j in adj:
+    for i, j in edge_list:
         dense_adj[i, j] = 1
 
     return dense_adj
+
+
+def to_sparse(adj_matrix: NDArray) -> NDArray:
+
+    """
+    Converts an adjacency matrix to a list of edges
+
+    Parameters
+    ----------
+    adj_matrix : NDArray
+        The squared adjacency matrix (num_nodes x num_nodes)
+
+    Returns
+    -------
+    NDArray
+        The list of edges (num_edges x 2)
+    """
+
+    return np.argwhere(adj_matrix > 0)
+
 
 def to_undirected(edge_list: NDArray) -> NDArray:
     """
@@ -68,6 +88,7 @@ def coalesce(edge_list: NDArray) -> NDArray:
     """
     return np.unique(edge_list, axis=0)
 
+
 def dense(generator):
     """
     Transforms a sparse generator into its dense version
@@ -83,6 +104,7 @@ def dense(generator):
         A callable that generates the squared adjacency matrix (num_nodes x num_nodes) of a graph
     """
     return lambda *args, **kwargs: to_dense(generator(*args, **kwargs))
+
 
 def weighted(generator: Callable, directed: bool = False, low: float = 0.0, high: float = 1.0,
              rng: Optional[Generator] = None) -> Callable:
@@ -136,7 +158,6 @@ def weighted(generator: Callable, directed: bool = False, low: float = 0.0, high
         weights = rng.uniform(low=low, high=high, size=(adj.shape[0], 1))
 
         return adj, weights
-
 
     return weighted_generator
 
