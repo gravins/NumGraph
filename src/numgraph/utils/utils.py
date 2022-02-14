@@ -72,6 +72,7 @@ def to_undirected(edge_list: NDArray) -> NDArray:
 
     return edge_list
 
+
 def coalesce(edge_list: NDArray) -> NDArray:
     """
     Polishes an edge list by removing duplicates and by sorting the edges
