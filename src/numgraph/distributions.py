@@ -7,41 +7,6 @@ from numpy.random import Generator, default_rng
 from numgraph.utils import remove_self_loops, to_undirected, coalesce
 
 
-def erdos_renyi(num_nodes: int, prob: float, directed: bool = False, rng: Optional[Generator] = None) -> NDArray:
-    """
-    Returns a random graph, also known as an Erdos-Renyi graph or a binomial graph.
-    The model chooses each of the possible edges with a defined probability.
-
-    Parameters
-    ----------
-    num_nodes : int
-        The number of nodes
-    prob : float
-        Probability of an edge
-    directed : bool, optional
-        If set to True, will return a directed graph, by default False
-    rng : Generator, optional
-        Numpy random number generator, by default None
-
-    Returns
-    -------
-    NDArray
-        The random graph (num_edges x 2)
-    """
-    assert num_nodes >= 0 and prob <=1 and prob > 0
-
-    if rng is None:
-        rng = default_rng()
-
-    mask = rng.random((num_nodes, num_nodes)) <= prob
-
-    if not directed:
-        mask = mask + mask.T
-
-    mask = remove_self_loops(mask)
-
-    edge_list = np.argwhere(mask)
-    return edge_list
 
 
 def barabasi_albert(num_nodes: int, num_edges: int, rng: Optional[Generator] = None) -> NDArray:

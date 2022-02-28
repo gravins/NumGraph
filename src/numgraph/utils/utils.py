@@ -107,62 +107,6 @@ def dense(generator):
     return lambda *args, **kwargs: to_dense(generator(*args, **kwargs))
 
 
-def weighted(generator: Callable, directed: bool = False, low: float = 0.0, high: float = 1.0,
-             rng: Optional[Generator] = None) -> Callable:
-    """
-    Takes as input a graph generator and returns a new generator function that outputs weighted
-    graphs. If the generator is dense, the output will be the weighted adjacency matrix. If the
-    generator is sparse, the new function will return a tuple (adj_list, weights).
-
-    Parameters
-    ----------
-    generator : Callable
-        A callable that generates graphs
-    directed: bool
-        Whether to generate weights for directed graphs
-    low : float, optional
-        Lower boundary of the sampling distribution interval,
-        i.e., interval in [low, high), by default 0.0
-    high : float, optional
-        Upper boundary of the sampling distribution interval,
-        i.e., interval in [low, high), by default 1.0
-    rng : Generator, optional
-        Numpy random number generator, by default None
-
-    Returns
-    -------
-    Callable
-        A callable that generates weighted graphs
-
-    Examples
-    --------
-    >> weighted(erdos_renyi)(num_nodes=100, prob=0.5)
-    """
-
-    if rng is None:
-        rng = default_rng()
-
-    def weighted_generator(*args, **kwargs):
-        adj = generator(*args, **kwargs)
-
-        if adj.shape[0] == adj.shape[1]:
-            num_nodes = adj.shape[0]
-            weights = rng.uniform(low=low, high=high, size=(num_nodes, num_nodes))
-
-            if not directed:
-                weights = np.triu(weights)
-                weights = weights + weights.T
-
-            adj = adj.astype(float) * weights
-            return adj
-
-        weights = rng.uniform(low=low, high=high, size=(adj.shape[0], 1))
-
-        return adj, weights
-
-    return weighted_generator
-
-
 def remove_self_loops(adj: NDArray) -> NDArray:
     """
     Removes every self-loop in the graph given by adj
@@ -184,7 +128,7 @@ def remove_self_loops(adj: NDArray) -> NDArray:
     row, col = adj.shape
 
     if row == col:
-        # The case of a squared dense adj matrix
+        # Case of a squared dense adj matrix
         return adj * (1 - np.eye(row, col, dtype=np.bool8))
 
     sources, targets = adj[:, 0], adj[:, 1]
