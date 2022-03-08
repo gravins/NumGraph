@@ -3,6 +3,9 @@ from numpy.typing import NDArray
 from numpy.random import Generator, default_rng
 from typing import Optional, Tuple
 
+def _make_weights_undirected(w):
+    w = np.triu(w)
+    return np.triu(w) + np.triu(w, 1).T
 
 def _erdos_renyi(num_nodes: int,
                  prob: float,
@@ -24,8 +27,8 @@ def _erdos_renyi(num_nodes: int,
     if weighted:
         weights = rng.uniform(low=0.0, high=1.0, size=(num_nodes, num_nodes))
         if not directed:
-            weights = np.triu(weights)
-            weights = weights + weights.T
+            weights = _make_weights_undirected(weights)
+
 
     return adj_matrix, weights
 
@@ -57,6 +60,8 @@ def erdos_renyi_coo(num_nodes: int,
     -------
     NDArray
         The random graph in COO representation (num_edges x 2).
+    Optional[NDArray]
+        Weights of the random graph.
     """
     adj_matrix, weights = _erdos_renyi(num_nodes=num_nodes,
                                        prob=prob,
@@ -64,9 +69,13 @@ def erdos_renyi_coo(num_nodes: int,
                                        weighted=weighted,
                                        rng=rng)
 
-    coo_matrix = np.argwhere(adj_matrix)
+    if weighted:
+        weights *= adj_matrix
 
-    return coo_matrix
+    coo_matrix = np.argwhere(adj_matrix)
+    coo_weights = np.expand_dims(weights[weights.nonzero()], -1) if weights is not None else None
+
+    return coo_matrix, coo_weights
 
 
 def erdos_renyi_full(num_nodes: int,
