@@ -7,8 +7,6 @@ from numpy.random import Generator, default_rng
 from numgraph.utils import remove_self_loops, to_undirected, coalesce
 
 
-
-
 def barabasi_albert(num_nodes: int, num_edges: int, rng: Optional[Generator] = None) -> NDArray:
     """
     Returns a graph sampled from the Barabasi-Albert (BA) model. The graph is built
