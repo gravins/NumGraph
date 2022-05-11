@@ -2,10 +2,8 @@ import numpy as np
 from numpy.typing import NDArray
 from numpy.random import Generator, default_rng
 from typing import Optional, Tuple
+from numgraph.utils import to_undirected
 
-def _make_weights_undirected(w):
-    w = np.triu(w)
-    return np.triu(w) + np.triu(w, 1).T
 
 def _erdos_renyi(num_nodes: int,
                  prob: float,
@@ -27,8 +25,7 @@ def _erdos_renyi(num_nodes: int,
     if weighted:
         weights = rng.uniform(low=0.0, high=1.0, size=(num_nodes, num_nodes))
         if not directed:
-            weights = _make_weights_undirected(weights)
-
+            weights = to_undirected(weights)
 
     return adj_matrix, weights
 
@@ -52,7 +49,7 @@ def erdos_renyi_coo(num_nodes: int,
     directed : bool, optional
         If set to True, will return a directed graph, by default False
     weighted : bool, optional
-        If set to True, will return a dense representation of
+        If set to True, will return a dense representation of the weighted graph, by default False
     rng : Generator, optional
         Numpy random number generator, by default None
 
@@ -97,7 +94,7 @@ def erdos_renyi_full(num_nodes: int,
     directed : bool, optional
         If set to True, will return a directed graph, by default False
     weighted : bool, optional
-        If set to True, will return a dense representation of
+        If set to True, will return a dense representation of the weighted graph, by default False
     rng : Generator, optional
         Numpy random number generator, by default None
 

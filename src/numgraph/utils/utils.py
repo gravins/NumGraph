@@ -50,27 +50,33 @@ def to_sparse(adj_matrix: NDArray) -> NDArray:
     return np.argwhere(adj_matrix > 0)
 
 
-def to_undirected(edge_list: NDArray) -> NDArray:
+def to_undirected(adj: NDArray) -> NDArray:
     """
     Turns a directed edge_list into a non-directed one
 
     Parameters
     ----------
     edge_list : NDArray
-        A directed edge list (num_edges x 2)
+        A directed adjacency matrix (num_nodes x num_nodes), or edge list (num_edges x 2)
 
     Returns
     -------
     NDArray
-        An undirected edge list ((2*num_edges) x 2)
+        An undirected adjacency matrix (num_nodes x num_nodes), or the edge list ((2*num_edges) x 2)
     """
-    sources, targets = edge_list[:, 0], edge_list[:, 1]
+    row, col = adj.shape
+
+    if row == col:
+        # Case of a squared dense adj matrix
+        return np.triu(adj) + np.triu(adj, 1).T
+
+    sources, targets = adj[:, 0], adj[:, 1]
     sources, targets = sources.reshape((-1, 1)), targets.reshape((-1, 1))
 
     new_edges = np.concatenate((targets, sources), axis=1)
-    edge_list = np.concatenate((edge_list, new_edges), axis=0)
+    adj = np.concatenate((adj, new_edges), axis=0)
 
-    return edge_list
+    return adj
 
 
 def coalesce(edge_list: NDArray) -> NDArray:
@@ -114,12 +120,13 @@ def remove_self_loops(adj: NDArray) -> NDArray:
     Parameters
     ----------
     adj : NDArray
-        The adjancency matrix (num_edges x 2)
+        The adjancency matrix (num_nodes x num_nodes), or the edge_list (num_edges x 2)
 
     Returns
     -------
     NDAarray
-        The list of edges without self-loops (new_num_edges x 2)
+        The adjacency matrix (num_nodes x num_nodes), or the list of edges (new_num_edges x 2), 
+        without self-loops.
 
     Raises
     ------
@@ -129,7 +136,8 @@ def remove_self_loops(adj: NDArray) -> NDArray:
 
     if row == col:
         # Case of a squared dense adj matrix
-        return adj * (1 - np.eye(row, col, dtype=np.bool8))
+        np.fill_diagonal(adj, 0)
+        return adj
 
     sources, targets = adj[:, 0], adj[:, 1]
     mask = ~(sources == targets)

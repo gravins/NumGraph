@@ -91,3 +91,46 @@ def susceptible_infected(generator: Callable,
         t += 1
 
     return snapshots, xs
+
+
+
+def heat_graph_diffusion(generator: Callable,
+                         t_max: Optional[int] = None, 
+                         starting_heat: Optional[float] = 1.,
+                         starting_node_temperature: Union[float, Callable] = 0.1, 
+                         num_nodes: Optional[int] = None,
+                         rng: Optional[Generator] = None) -> Tuple:
+    
+    assert not isinstance(starting_node_temperature, callable) or starting_node_temperature < 1., 'starting_node_temperature must be a function or a float smaller that 1.'
+    assert starting_heat <= 1, 'starting_heat must be smaller or equal to 1.'
+
+    if rng is None:
+        rng = default_rng()
+
+    # Generate the graph
+    edges = generator(rng)  # edge_index --> snapshot_num_edges x 2
+
+    if num_nodes is None:
+        num_nodes = edges.max() + 1
+
+    if isinstance(starting_node_temperature, callable):
+        x = starting_node_temperature(num_nodes)
+    else:
+        x = np.full((num_nodes,1), starting_node_temperature)
+
+    # Improve heat of a random node
+    i = rng.integer(num_nodes)
+    x[i,0] = starting_heat
+    
+    # Compute the Laplacian matrix
+    adj_mat = coo_matrix(([1]*len(edges), edges.T), shape=(num_nodes, num_nodes)).toarray()
+    degree = np.diag(np.sum(adj_mat, axis=1))
+    L = degree - adj_mat
+
+    xs = []
+    for t in range(t_max):
+        # Graph Heat Equation solution x(t) = x_0 e^(-tL)
+        xs.append((np.e ** (-t * L)) @ x)                       ## TODO: controlla che l'equazione sia corretta ## TODO: il calore non viene mai dissipato?
+
+    return [edges] * len(xs), xs
+    
