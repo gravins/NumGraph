@@ -5,11 +5,12 @@ from typing import Optional, Tuple, List, Callable
 from numgraph.utils import coalesce
 
 
-def _stochastic_block_model(block_sizes: List[int], probs: List[List[float]],
-                           generator: Callable, 
-                           directed: bool = False,
-                           weighted: bool = False,
-                           rng: Optional[Generator] = None) -> NDArray:
+def _stochastic_block_model(block_sizes: List[int], 
+                            probs: List[List[float]],
+                            generator: Callable, 
+                            directed: bool = False,
+                            weighted: bool = False,
+                            rng: Optional[Generator] = None) -> NDArray:
     
     assert all(block_sizes) and len(probs) == len(block_sizes)
     assert all([len(p) == len(probs) for p in probs]) and all([all(p) for p in probs])
@@ -17,9 +18,11 @@ def _stochastic_block_model(block_sizes: List[int], probs: List[List[float]],
     if rng is None:
         rng = default_rng()
 
-    communities = [generator(b, probs[i][i], rng) for i, b in enumerate(block_sizes)]
-
-    assert sum([c.shape[1] == 2 for c in communities]), 'The generator must return a graph in COO representation.'
+    communities = []
+    for i, b in enumerate(block_sizes):
+        edges = generator(b, probs[i][i], rng)
+        assert isinstance(edges, tuple) and edges[0].shape[1] == 2, 'The generator must return a graph in COO representation.'
+        communities.append(edges[0])
 
     # Update communities's indices
     sizes = {}

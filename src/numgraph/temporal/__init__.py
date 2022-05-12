@@ -1,1 +1,1 @@
-from .temporal_distributions import susceptible_infected
+from ._susceptible_infected import susceptible_infected_coo, susceptible_infected_full
