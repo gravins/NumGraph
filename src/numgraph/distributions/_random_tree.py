@@ -38,7 +38,7 @@ def _random_tree(num_nodes: int,
     if weighted:
         if rng is None:
             rng = default_rng()
-        weights = rng.uniform(low=0.0, high=1.0, size=(num_nodes, 1))
+        weights = rng.uniform(low=0.0, high=1.0, size=(len(edges), 1))
 
     if not directed:
         edges = to_undirected(edges)

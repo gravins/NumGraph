@@ -2,7 +2,7 @@ import numpy as np
 from numpy.typing import NDArray
 from numpy.random import Generator, default_rng
 from typing import Optional, Tuple
-from numgraph.utils import to_undirected
+from numgraph.utils import to_undirected, remove_self_loops
 
 
 def _erdos_renyi(num_nodes: int,
@@ -17,6 +17,7 @@ def _erdos_renyi(num_nodes: int,
         rng = default_rng()
 
     adj_matrix = rng.random((num_nodes, num_nodes)) <= prob
+    adj_matrix = remove_self_loops(adj_matrix)
 
     if not directed:
         adj_matrix = adj_matrix + adj_matrix.T

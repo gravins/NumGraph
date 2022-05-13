@@ -17,7 +17,7 @@ def _grid(height: int,
     num_nodes = height * width
     K = len(kernel)
 
-    sources = np.arange(num_nodes, dtype=np.long).repeat(K)
+    sources = np.arange(num_nodes, dtype=np.int64).repeat(K)
     targets = sources + np.tile(kernel, num_nodes)
     mask = (targets >= 0) & (targets < num_nodes)
 

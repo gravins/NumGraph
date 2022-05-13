@@ -83,6 +83,7 @@ def susceptible_infected_coo(generator: Callable,
     ----------
     generator : Callable
         A callable that takes as input a rng and generates the simulation graph
+        NOTE: The weights are not used by the model
     prob : float, optional
         The probability of infection, by default 0.5
     mask_size : float, optional
@@ -100,8 +101,8 @@ def susceptible_infected_coo(generator: Callable,
     -------
     Tuple
         The susceptible-infected DPS. The tuple contains 2 elements:
-        - the list of graph's snapshots (T x (snapshot_num_edges x 2))
-        - the list of nodes' states (T x (snapshot_num_nodes, ))
+        - the list of graph's snapshots in COO representation (T x (snapshot_num_edges x 2))
+        - the list of nodes' states (T x (num_nodes, ))
     """
     return  _susceptible_infected(generator = generator, 
                                   prob = prob,
@@ -132,6 +133,7 @@ def susceptible_infected_full(generator: Callable,
     ----------
     generator : Callable
         A callable that takes as input a rng and generates the simulation graph
+        NOTE: The weights are not used by the model
     prob : float, optional
         The probability of infection, by default 0.5
     mask_size : float, optional
@@ -149,16 +151,16 @@ def susceptible_infected_full(generator: Callable,
     -------
     Tuple
         The susceptible-infected DPS. The tuple contains 2 elements:
-        - the list of graph's snapshots (T x (snapshot_num_edges x snapshot_num_edges))
-        - the list of nodes' states (T x (snapshot_num_nodes, ))
+        - the list of graph's snapshots in matrix represnetation (T x (num_nodes x num_nodes))
+        - the list of nodes' states (T x (num_nodes, ))
     """
     edges_snapshots_coo, nodes_snapshots =  _susceptible_infected(generator = generator, 
-                                                              prob = prob,
-                                                              mask_size = mask_size,
-                                                              t_max = t_max, 
-                                                              infected_nodes = infected_nodes, 
-                                                              num_nodes = num_nodes,
-                                                              rng = rng)
+                                                                  prob = prob,
+                                                                  mask_size = mask_size,
+                                                                  t_max = t_max, 
+                                                                  infected_nodes = infected_nodes, 
+                                                                  num_nodes = num_nodes,
+                                                                  rng = rng)
     edges_snapshots = []
     for coo_matrix in edges_snapshots_coo:
         adj_matrix = np.zeros((num_nodes, num_nodes))

@@ -86,6 +86,7 @@ def stochastic_block_model_coo(block_sizes: List[int],
         The element i,i define the edge probability inside block i.
     generator : Callable
         A callable that generates communities with size depending on block_sizes
+        NOTE: The generator takes as input the block size, the probability, and the rng
     directed : bool, optional
         If set to True, will return a directed graph, by default False
     weighted : bool, optional
@@ -133,6 +134,7 @@ def stochastic_block_model_full(block_sizes: List[int],
         The element i,i define the edge probability inside block i.
     generator : Callable
         A callable that generates communities with size depending on block_sizes
+        NOTE: The generator takes as input the block size, the probability, and the rng
     directed : bool, optional
         If set to True, will return a directed graph, by default False
     weighted : bool, optional
@@ -147,11 +149,11 @@ def stochastic_block_model_full(block_sizes: List[int],
     """
 
     coo_matrix, weights = _stochastic_block_model(block_sizes=block_sizes,
-                                                      probs=probs,
-                                                      generator=generator,
-                                                      directed=directed,
-                                                      weighted=weighted,
-                                                      rng=rng)
+                                                  probs=probs,
+                                                  generator=generator,
+                                                  directed=directed,
+                                                  weighted=weighted,
+                                                  rng=rng)
     # Fill adj_matrix with the weights
     num_nodes = sum(block_sizes)
     adj_matrix = np.zeros((num_nodes, num_nodes))

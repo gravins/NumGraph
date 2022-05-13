@@ -18,7 +18,7 @@ def _barabasi_albert(num_nodes: int,
     sources, targets = np.arange(num_edges), rng.permutation(num_edges)
 
     for i in range(num_edges, num_nodes):
-        sources = np.concatenate([sources, np.full((num_edges, ), i, dtype=np.long)])
+        sources = np.concatenate([sources, np.full((num_edges, ), i, dtype=np.int64)])
         choice = rng.choice(np.concatenate([sources, targets]), num_edges)
         targets = np.concatenate([targets, choice])
 
@@ -83,9 +83,9 @@ def barabasi_albert_coo(num_nodes: int,
 
 
 def barabasi_albert_full(num_nodes: int, 
-                        num_edges: int, 
-                        weighted: bool = False,
-                        rng: Optional[Generator] = None) -> NDArray:
+                         num_edges: int, 
+                         weighted: bool = False,
+                         rng: Optional[Generator] = None) -> NDArray:
     """
     Returns a graph sampled from the Barabasi-Albert (BA) model. The graph is built
     incrementally by adding `num_edges` arcs from a new node to already existing ones with
