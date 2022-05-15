@@ -125,6 +125,7 @@ def plot_grid(G):
   nx.draw(G, pos)
   plt.show()
 
+
 def get_directional_matrices(directed, N, p, block_size, probs, h, w, generator, rng, coo=False):
     if coo:
         m = [

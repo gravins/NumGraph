@@ -2,7 +2,7 @@ import numpy as np
 from numpy.typing import NDArray
 from numpy.random import Generator, default_rng
 from typing import Optional, Tuple, List, Callable
-from numgraph.utils import coalesce
+from numgraph.utils import coalesce, unsorted_coalesce
 
 
 def _stochastic_block_model(block_sizes: List[int], 
@@ -49,16 +49,17 @@ def _stochastic_block_model(block_sizes: List[int],
 
             edges.append(inter_block_edges)
 
-    edges = coalesce(np.concatenate(edges + communities))
+    edges = np.concatenate(edges + communities)
+    if not directed:
+        edges = np.vstack((edges, edges[:, [1,0]]))
+    edges = coalesce(edges)
 
     weights = None
     if weighted:
-        weights = rng.uniform(low=0.0, high=1.0, size=(len(edges), 1))
-
-    if not directed:
-        edges = np.vstack((edges, edges[:, [0,1]]))
-        if weighted:
-            weights = np.vstack((weights, weights))
+        weights = rng.uniform(low=0.0, high=1.0, size=(sum(block_sizes), sum(block_sizes)))
+        if not directed:
+            weights = np.tril(weights) + np.triu(weights.T, 1)
+        weights = np.expand_dims(weights[edges[:,0], edges[:,1]], axis=-1)
 
     return edges, weights
 

@@ -8,6 +8,7 @@ from numgraph.utils import to_undirected
 def _grid(height: int, 
           width: int, 
           kernel: NDArray,
+          directed: bool = False,
           weighted: bool = False, 
           rng: Optional[Generator] = None) -> NDArray:
 
@@ -36,6 +37,10 @@ def _grid(height: int,
     adj_matrix = np.zeros((num_nodes, num_nodes))
     adj_matrix[edge_list[:,0], edge_list[:,1]] = 1
 
+    if not directed:
+        adj_matrix = adj_matrix + adj_matrix.T
+        adj_matrix[adj_matrix.nonzero()] = 1
+
     weights = None
     if weighted:
         if rng is None:
@@ -48,6 +53,7 @@ def _grid(height: int,
 
 def grid_full(height: int, 
               width: int, 
+              directed: bool=False,
               weighted: bool = False, 
               rng: Optional[Generator] = None) -> NDArray:
     """
@@ -63,6 +69,8 @@ def grid_full(height: int,
         Number of vertices in the vertical axis
     width : int
         Number of vertices in the horizontal axis
+    directed : bool, optional
+        If set to True, will return a directed graph, by default False
     weighted : bool, optional
         If set to True, will return a dense representation of the weighted graph, by default False
     rng : Optional[Generator], optional
@@ -75,7 +83,7 @@ def grid_full(height: int,
     """
     w = width
     kernel = np.array([-w - 1, -w, -w + 1, -1, w, w - 1, w, w + 1])
-    adj_matrix, weights = _grid(height, width, kernel, weighted, rng)
+    adj_matrix, weights = _grid(height, width, kernel, directed, weighted, rng)
 
     adj_matrix = adj_matrix.astype(dtype=np.float32)
 
@@ -84,6 +92,7 @@ def grid_full(height: int,
 
 def grid_coo(height: int, 
              width: int, 
+             directed: bool=False,
              weighted: bool = False, 
              rng: Optional[Generator] = None) -> Tuple[NDArray, Optional[NDArray]]:
     """
@@ -99,6 +108,8 @@ def grid_coo(height: int,
         Number of vertices in the vertical axis
     width : int
         Number of vertices in the horizontal axis
+    directed : bool, optional
+        If set to True, will return a directed graph, by default False
     weighted : bool, optional
         If set to True, will return a dense representation of the weighted graph, by default False
     rng : Optional[Generator], optional
@@ -113,7 +124,7 @@ def grid_coo(height: int,
     """
     w = width
     kernel = np.array([-w - 1, -w, -w + 1, -1, w, w - 1, w, w + 1])
-    adj_matrix, weights = _grid(height, width, kernel, weighted, rng)
+    adj_matrix, weights = _grid(height, width, kernel, directed, weighted, rng)
 
     if weighted:
         weights *= adj_matrix
@@ -126,6 +137,7 @@ def grid_coo(height: int,
 
 def simple_grid_full(height: int, 
                      width: int,
+                     directed: bool=False,
                      weighted: bool = False, 
                      rng: Optional[Generator] = None) -> NDArray:
     """
@@ -141,6 +153,8 @@ def simple_grid_full(height: int,
         Number of vertices in the vertical axis
     width : int
         Number of vertices in the horizontal axis
+    directed : bool, optional
+        If set to True, will return a directed graph, by default False
     weighted : bool, optional
         If set to True, will return a dense representation of the weighted graph, by default False
     rng : Optional[Generator], optional
@@ -153,7 +167,7 @@ def simple_grid_full(height: int,
     """
     w = width
     kernel = np.array([-w, -1, 1, w])
-    adj_matrix, weights = _grid(height, width, kernel, weighted, rng)
+    adj_matrix, weights = _grid(height, width, kernel, directed, weighted, rng)
 
     adj_matrix = adj_matrix.astype(dtype=np.float32)
 
@@ -162,6 +176,7 @@ def simple_grid_full(height: int,
 
 def simple_grid_coo(height: int, 
                     width: int,
+                    directed: bool=False,
                     weighted: bool = False, 
                     rng: Optional[Generator] = None) -> Tuple[NDArray, Optional[NDArray]]:
     """
@@ -177,6 +192,8 @@ def simple_grid_coo(height: int,
         Number of vertices in the vertical axis
     width : int
         Number of vertices in the horizontal axis
+    directed : bool, optional
+        If set to True, will return a directed graph, by default False
     weighted : bool, optional
         If set to True, will return a dense representation of the weighted graph, by default False
     rng : Optional[Generator], optional
@@ -191,7 +208,7 @@ def simple_grid_coo(height: int,
     """
     w = width
     kernel = np.array([-w, -1, 1, w])
-    adj_matrix, weights = _grid(height, width, kernel, weighted, rng)
+    adj_matrix, weights = _grid(height, width, kernel, directed, weighted, rng)
 
     if weighted:
         weights *= adj_matrix

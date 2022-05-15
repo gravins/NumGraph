@@ -3,7 +3,7 @@ from collections import Counter
 from numpy.typing import NDArray
 from typing import Optional, Tuple
 from numpy.random import Generator, default_rng
-from numgraph.utils import to_undirected
+from numgraph.utils import to_undirected, unsorted_coalesce
 
 
 def _random_tree(num_nodes: int, 
@@ -44,7 +44,7 @@ def _random_tree(num_nodes: int,
         edges = to_undirected(edges)
         weights = np.vstack((weights, weights)) if weights is not None else None
 
-    return edges, weights
+    return unsorted_coalesce(edges, weights)
 
 
 def random_tree_coo(num_nodes: int,

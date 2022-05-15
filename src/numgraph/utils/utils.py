@@ -1,4 +1,4 @@
-from typing import Callable, Optional
+from typing import Tuple, Optional
 from numpy.typing import NDArray
 from numpy.random import default_rng, Generator
 import numpy as np
@@ -94,6 +94,27 @@ def coalesce(edge_list: NDArray) -> NDArray:
         A sorted edge list with no duplicated edges (new_num_edges x 2)
     """
     return np.unique(edge_list, axis=0)
+
+
+def unsorted_coalesce(edge_list: NDArray, weights: Optional[NDArray] = None) -> Tuple[NDArray, NDArray]:
+    """
+    Polishes an edge list by removing duplicates and by sorting the edges
+
+    Parameters
+    ----------
+    edge_list : NDArray
+        An edge list (num_edges x 2)
+    weights : NDArray
+        The weights (num_edges x 1)
+    Returns
+    -------
+    NDArray
+        An unsorted edge list with no duplicated edges (new_num_edges x 2)
+    NDArray
+        The unsorted weigths associated to the new edge list (new_num_edges x 1)
+    """
+    indexes = sorted(np.unique(edge_list, return_index=True, axis=0)[1])
+    return edge_list[indexes], weights[indexes] if weights is not None else weights
 
 
 def dense(generator):

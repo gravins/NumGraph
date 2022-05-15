@@ -2,7 +2,7 @@ import numpy as np
 from numpy.typing import NDArray
 from numpy.random import Generator, default_rng
 from typing import Optional, Tuple
-from numgraph.utils import to_undirected
+from numgraph.utils import to_undirected, unsorted_coalesce
 
 def _star(num_nodes: int,
           directed: bool = False,
@@ -22,7 +22,7 @@ def _star(num_nodes: int,
         edges = to_undirected(edges)
         weights = np.vstack((weights, weights)) if weights is not None else None
 
-    return edges, weights
+    return unsorted_coalesce(edges, weights)
 
 
 def star_full(num_nodes: int, 
