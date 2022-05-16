@@ -1,5 +1,3 @@
-from email.policy import default
-from operator import ge
 import numpy as np
 from numgraph.distributions import *
 import unittest

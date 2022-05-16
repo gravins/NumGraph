@@ -33,8 +33,8 @@ def _heat_graph_diffusion(generator: Callable,
         x = np.full((num_nodes,1), init_temp)
 
     # Improve heat of a random node
-    i = rng.integer(num_nodes)
-    x[i,0] = heat_spike if heat_spike is not None else rng.uniform(low=0.7, high=2.0, size=(num_nodes, 1))
+    i = rng.integers(num_nodes)
+    x[i,0] = heat_spike if heat_spike is not None else rng.uniform(low=0.7, high=2.0, size=(1, 1))
     
     # Compute the Laplacian matrix
     adj_mat = np.zeros((num_nodes, num_nodes))
@@ -42,9 +42,10 @@ def _heat_graph_diffusion(generator: Callable,
     self_loops = np.diag(adj_mat)
     np.fill_diagonal(adj_mat, 0)
     degree = np.diag(np.sum(adj_mat, axis=1))
-    L = np.eye(num_nodes) - degree^(-1/2) @ adj_mat @ degree^(-1/2) # Normalized laplacian
+    new_degree = np.linalg.inv(np.sqrt(degree))
+    L = np.eye(num_nodes) - new_degree @ adj_mat @ new_degree # Normalized laplacian
 
-    xs = []
+    xs = [x]
     for t in range(t_max):
         # Graph Heat Equation (Euler's method)
         x = x + step_size * (L @ x)
