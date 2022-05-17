@@ -7,6 +7,7 @@ import numpy as np
 def _heat_graph_diffusion(generator: Callable,
                           t_max: Optional[int] = None, 
                           heat_spike: Optional[float] = 1.,
+                          num_spikes: int = 1,
                           init_temp: Optional[float] = None, 
                           num_nodes: Optional[int] = None,
                           step_size: float = 0.1,
@@ -15,6 +16,8 @@ def _heat_graph_diffusion(generator: Callable,
     
     assert init_temp is None or (isinstance(init_temp, float) and init_temp > 0), f'init_temp can be None or float > 0, not {type(init_temp)} with value {init_temp}' 
     assert heat_spike is None or (isinstance(heat_spike, float) and heat_spike > 0), f'heat_spike can be None or float > 0, not {type(heat_spike)} with value {heat_spike}' 
+
+    assert num_spikes > 0 and num_spikes < t_max, 'num_spike must be in the range (0, t_max)'
 
     if rng is None:
         rng = default_rng()
@@ -31,10 +34,6 @@ def _heat_graph_diffusion(generator: Callable,
         x = rng.uniform(low=0.0, high=0.2, size=(num_nodes, 1))
     else:
         x = np.full((num_nodes,1), init_temp)
-
-    # Improve heat of a random node
-    i = rng.integers(num_nodes)
-    x[i,0] = heat_spike if heat_spike is not None else rng.uniform(low=0.7, high=2.0, size=(1, 1))
     
     # Compute the Laplacian matrix
     adj_mat = np.zeros((num_nodes, num_nodes))
@@ -45,11 +44,23 @@ def _heat_graph_diffusion(generator: Callable,
     new_degree = np.linalg.inv(np.sqrt(degree))
     L = np.eye(num_nodes) - new_degree @ adj_mat @ new_degree # Normalized laplacian
 
-    xs = [x]
+    if num_spikes > 1:
+        spike_timesteps = np.arange(1, t_max)
+        rng.shuffle(spike_timesteps)
+        spike_timesteps = set(spike_timesteps[:num_spikes])
+        spike_timesteps.add(0)
+
+    xs = []
     for t in range(t_max):
+        if t in spike_timesteps:
+            # Improve heat of a random node
+            i = rng.integers(num_nodes)
+            x[i,0] = (heat_spike if heat_spike is not None
+                      else rng.uniform(low=0.7, high=2.0, size=(1, 1)))
+
         # Graph Heat Equation (Euler's method)
-        x = x + step_size * (L @ x)
         xs.append(x)
+        x = x + step_size * (-L @ x)
 
     if return_coo:
         return [(edges, weights)] * t_max, xs
@@ -61,6 +72,7 @@ def _heat_graph_diffusion(generator: Callable,
 def heat_graph_diffusion_coo(generator: Callable,
                              t_max: Optional[int] = 10, 
                              heat_spike: Optional[float] = None,
+                             num_spikes: int = 1,
                              init_temp: Optional[float] = None, 
                              step_size: float = 0.1,
                              num_nodes: Optional[int] = None,
@@ -79,6 +91,8 @@ def heat_graph_diffusion_coo(generator: Callable,
         The maximum number of timesteps in the simulation, by default 10
     heat_spike : float, optional
         The temperature of a spiking node. If None it computes a random temperature between 0.7 and 2., by default None
+    num_spikes : int, optional
+        The number of heat spikes during the process, by default 1
     init_temp : float, optional
         The initial temperature of the nodes. If None it computes a random temperature between 0. and 0.2, by default None
     ste_size : float, optional
@@ -99,6 +113,7 @@ def heat_graph_diffusion_coo(generator: Callable,
     return _heat_graph_diffusion(generator = generator,  
                                  t_max = t_max, 
                                  heat_spike = heat_spike,
+                                 num_spikes = num_spikes,
                                  init_temp = init_temp, 
                                  num_nodes = num_nodes,
                                  step_size = step_size,
@@ -109,6 +124,7 @@ def heat_graph_diffusion_coo(generator: Callable,
 def heat_graph_diffusion_full(generator: Callable,
                               t_max: Optional[int] = None, 
                               heat_spike: Optional[float] = None,
+                              num_spikes: int = 1,
                               init_temp: Optional[float] = None, 
                               step_size: float = 0.1,
                               num_nodes: Optional[int] = None,
@@ -127,6 +143,8 @@ def heat_graph_diffusion_full(generator: Callable,
         The maximum number of timesteps in the simulation, by default 10
     heat_spike : float, optional
         The temperature of a spiking node. If None it computes a random temperature between 0.7 and 2., by default None
+    num_spikes : int, optional
+        The number of heat spikes during the process, by default 1
     init_temp : float, optional
         The initial temperature of the nodes. If None it computes a random temperature between 0. and 0.2, by default None
     ste_size : float, optional
@@ -146,9 +164,9 @@ def heat_graph_diffusion_full(generator: Callable,
     return _heat_graph_diffusion(generator = generator,  
                                  t_max = t_max, 
                                  heat_spike = heat_spike,
+                                 num_spikes = num_spikes,
                                  init_temp = init_temp, 
                                  num_nodes = num_nodes,
                                  step_size = step_size,
                                  return_coo = False,
                                  rng = rng)
-

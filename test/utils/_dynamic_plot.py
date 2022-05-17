@@ -15,7 +15,7 @@ class DynamicHeatmap:
         self.xs = xs
         self.shape = shape
         self.annot = annot
-        self.cmap = sns.color_palette("magma", as_cmap=True)
+        self.cmap = sns.color_palette("rocket", as_cmap=True)
         
         self.M, self.m = -np.inf, np.inf
         for x in xs:
@@ -43,7 +43,7 @@ class DynamicHeatmap:
 
 
 
-class DynamicGraph:
+class DynamicHeatGraph:
 
     def __init__(self, edges, xs, layout):
         self.fig, self.ax = plt.subplots()
@@ -56,6 +56,10 @@ class DynamicGraph:
         self.pos = layout(self.G)
 
         self.cmap = sns.color_palette("rocket", as_cmap=True) #magma
+        self.M, self.m = -np.inf, np.inf
+        for x in xs:
+            self.M = max(np.max(x), self.M)
+            self.m = min(np.min(x), self.m)
 
     def animate(self):
         def init():

@@ -1,5 +1,5 @@
 from matplotlib import animation
-from utils import DynamicHeatmap, DynamicGraph
+from utils import DynamicHeatmap, DynamicHeatGraph
 from numgraph.distributions import *
 from numgraph.temporal import *
 import matplotlib.pyplot as plt
@@ -35,7 +35,7 @@ for edge_list, x in zip(snapshots, xs):
 print('Heat diffusion')
 h, w = 3, 3
 generator = lambda _: simple_grid_coo(h,w, directed=False)
-snapshots, xs = heat_graph_diffusion_coo(generator, t_max=100, num_nodes=h*w)
+snapshots, xs = heat_graph_diffusion_coo(generator, t_max=100, num_spikes=10, num_nodes=h*w)
 
 dh = DynamicHeatmap(xs=xs, shape=(h,w), annot=True)
 dh.animate()
@@ -45,7 +45,7 @@ plt.show()
 #dh.anim.save(f, writer=writervideo)
 
 
-dh = DynamicGraph(edges=snapshots, xs=xs, layout=lambda G: nx.spring_layout(G, iterations=100, seed=9))
+dh = DynamicHeatGraph(edges=snapshots, xs=xs, layout=lambda G: nx.spring_layout(G, iterations=100, seed=9))
 dh.animate()
 plt.show()
 #f = "./DynamicGraph.mp4" 
