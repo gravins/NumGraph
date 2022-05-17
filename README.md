@@ -64,3 +64,4 @@ array([[0.        , 0.72912008, 0.33964166, 0.30968042, 0.08774328],
 
 ```
 
+Other examples can be found in ``` test/plot_static.py ``` and ``` test/plot_temporal.py ```.

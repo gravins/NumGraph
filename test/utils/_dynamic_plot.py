@@ -15,7 +15,7 @@ class DynamicHeatmap:
         self.xs = xs
         self.shape = shape
         self.annot = annot
-        self.cmap = sns.color_palette("rocket", as_cmap=True)
+        self.cmap = sns.color_palette("magma", as_cmap=True)
         
         self.M, self.m = -np.inf, np.inf
         for x in xs:
@@ -55,7 +55,7 @@ class DynamicHeatGraph:
         self.G.add_edges_from(self.edges)
         self.pos = layout(self.G)
 
-        self.cmap = sns.color_palette("rocket", as_cmap=True) #magma
+        self.cmap = sns.color_palette("magma", as_cmap=True) #rocket
         self.M, self.m = -np.inf, np.inf
         for x in xs:
             self.M = max(np.max(x), self.M)
@@ -75,3 +75,29 @@ class DynamicHeatGraph:
         sm = plt.cm.ScalarMappable(cmap=self.cmap, norm=plt.Normalize(vmin=self.m, vmax=self.M))
         sm.set_array([])
         plt.colorbar(sm)
+
+
+
+class DynamicNodeSignal:
+
+    def __init__(self, xs):
+        self.fig, self.ax = plt.subplots()
+        self.anim = None
+        self.pbar = tqdm.tqdm(total=len(xs))
+        self.xs = xs
+        self.line=None
+        self.M, self.m = -np.inf, np.inf
+        for x in xs:
+            self.M = max(np.max(x), self.M)
+            self.m = min(np.min(x), self.m)
+        self.ax.set_ylim([self.m - (0.1 * self.m), self.M + (0.1 * self.M)])
+        
+    def animate(self):
+        def init():
+            self.line, = self.ax.plot(self.xs[0], color='#1E88E5')
+            
+        def animate(i):
+            self.pbar.update(1)
+            self.line.set_ydata(self.xs[i])
+
+        self.anim = animation.FuncAnimation(self.fig, animate, init_func=init, frames=len(self.xs), repeat = False)

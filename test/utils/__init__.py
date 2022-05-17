@@ -1,6 +1,6 @@
 from numgraph.distributions import *
 from ._plot import plot_ba, plot_clique, plot_er, plot_grid, plot_sbm, plot_star, plot_tree, plot_tree_on_terminal
-from ._dynamic_plot import DynamicHeatGraph, DynamicHeatmap
+from ._dynamic_plot import DynamicHeatGraph, DynamicHeatmap, DynamicNodeSignal
 
 def get_directional_matrices(directed, N, p, block_size, probs, h, w, generator, rng, coo=False):
     if coo:
