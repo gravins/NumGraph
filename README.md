@@ -30,7 +30,7 @@ Numpy library for synthetic graph generation.
 ## Usage
 ```python
 
->>> from numgraph.distributions import star_coo, star_full
+>>> from numgraph import star_coo, star_full
 >>> coo_matrix, coo_weights = star_coo(num_nodes=5, weighted=True)
 >>> print(coo_matrix)
 array([[0, 1],
