@@ -58,10 +58,12 @@ def grid_full(height: int,
               rng: Optional[Generator] = None) -> NDArray:
     """
     Returns a full undirected two-dimensional rectangular grid lattice graph.
-    Example
-    1 - 2 - 3
-    | X | X |
-    4 - 5 - 6
+
+    .. code-block:: python
+
+        1 - 2 - 3
+        | X | X |
+        4 - 5 - 6
 
     Parameters
     ----------
@@ -70,16 +72,16 @@ def grid_full(height: int,
     width : int
         Number of vertices in the horizontal axis
     directed : bool, optional
-        If set to True, will return a directed graph, by default False
+        If set to :obj:`True`, will return a directed graph, by default :obj:`False`
     weighted : bool, optional
-        If set to True, will return a dense representation of the weighted graph, by default False
+        If set to :obj:`True`, will return a dense representation of the weighted graph, by default :obj:`False`
     rng : Optional[Generator], optional
-        Numpy random number generator, by default None
+        Numpy random number generator, by default :obj:`None`
 
     Returns
     -------
     NDArray
-        The full undirected two-dimensional rectangular grid lattice graph in matrix representation (num_nodes x num_nodes)
+        The full undirected two-dimensional rectangular grid lattice graph in matrix representation :obj:`(num_nodes x num_nodes)`
     """
     w = width
     kernel = np.array([-w - 1, -w, -w + 1, -1, w, w - 1, w, w + 1])
@@ -97,10 +99,12 @@ def grid_coo(height: int,
              rng: Optional[Generator] = None) -> Tuple[NDArray, Optional[NDArray]]:
     """
     Returns a full undirected two-dimensional rectangular grid lattice graph.
-    Example
-    1 - 2 - 3
-    | X | X |
-    4 - 5 - 6
+    
+    .. code-block:: python
+
+        1 - 2 - 3
+        | X | X |
+        4 - 5 - 6
 
     Parameters
     ----------
@@ -109,16 +113,16 @@ def grid_coo(height: int,
     width : int
         Number of vertices in the horizontal axis
     directed : bool, optional
-        If set to True, will return a directed graph, by default False
+        If set to :obj:`True`, will return a directed graph, by default :obj:`False`
     weighted : bool, optional
-        If set to True, will return a dense representation of the weighted graph, by default False
+        If set to :obj:`True`, will return a dense representation of the weighted graph, by default :obj:`False`
     rng : Optional[Generator], optional
-        Numpy random number generator, by default None
+        Numpy random number generator, by default :obj:`None`
 
     Returns
     -------
     NDArray
-        The full undirected two-dimensional rectangular grid lattice graph in COO representation (num_edges x 2)
+        The full undirected two-dimensional rectangular grid lattice graph in COO representation :obj:`(num_edges x 2)`
     Optional[NDArray]
         Weights of the random graph.
     """
@@ -142,10 +146,12 @@ def simple_grid_full(height: int,
                      rng: Optional[Generator] = None) -> NDArray:
     """
     Returns an undirected two-dimensional rectangular grid lattice graph.
-    Example
-    1 -- 2 -- 3
-    |    |    |
-    4 -- 5 -- 6
+    
+    .. code-block:: python
+
+        1 -- 2 -- 3
+        |    |    |
+        4 -- 5 -- 6
 
     Parameters
     ----------
@@ -154,16 +160,16 @@ def simple_grid_full(height: int,
     width : int
         Number of vertices in the horizontal axis
     directed : bool, optional
-        If set to True, will return a directed graph, by default False
+        If set to :obj:`True`, will return a directed graph, by default :obj:`False`
     weighted : bool, optional
-        If set to True, will return a dense representation of the weighted graph, by default False
+        If set to :obj:`True`, will return a dense representation of the weighted graph, by default :obj:`False`
     rng : Optional[Generator], optional
-        Numpy random number generator, by default None
+        Numpy random number generator, by default :obj:`None`
 
     Returns
     -------
     NDArray
-        The undirected two-dimensional rectangular grid lattice graph in matrix representation (num_nodes x num_nodes)
+        The undirected two-dimensional rectangular grid lattice graph in matrix representation :obj:`(num_nodes x num_nodes)`
     """
     w = width
     kernel = np.array([-w, -1, 1, w])
@@ -181,10 +187,12 @@ def simple_grid_coo(height: int,
                     rng: Optional[Generator] = None) -> Tuple[NDArray, Optional[NDArray]]:
     """
     Returns an undirected two-dimensional rectangular grid lattice graph.
-    Example
-    1 -- 2 -- 3
-    |    |    |
-    4 -- 5 -- 6
+    
+    .. code-block:: python
+
+        1 -- 2 -- 3
+        |    |    |
+        4 -- 5 -- 6
 
     Parameters
     ----------
@@ -193,16 +201,16 @@ def simple_grid_coo(height: int,
     width : int
         Number of vertices in the horizontal axis
     directed : bool, optional
-        If set to True, will return a directed graph, by default False
+        If set to :obj:`True`, will return a directed graph, by default :obj:`False`
     weighted : bool, optional
-        If set to True, will return a dense representation of the weighted graph, by default False
+        If set to :obj:`True`, will return a dense representation of the weighted graph, by default :obj:`False`
     rng : Optional[Generator], optional
-        Numpy random number generator, by default None
+        Numpy random number generator, by default :obj:`None`
 
     Returns
     -------
     NDArray
-        The undirected two-dimensional rectangular grid lattice graph in COO representation (num_edges x 2)
+        The undirected two-dimensional rectangular grid lattice graph in COO representation :obj:`(num_edges x 2)`
     Optional[NDArray]
         Weights of the random graph.
     """

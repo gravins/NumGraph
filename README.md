@@ -1,13 +1,14 @@
-[pypi-image]: https://github.com/gravins/NumGraph/blob/main/img/NumGraph_logo.svg
+[pypi-image]: https://github.com/gravins/NumGraph/blob/main/docs/source/_static/img/NumGraph_logo.svg
 [pypi-url]: https://pypi.org/project/numgraph/
 
 <p align="center">
-  <img width="30%" src="https://github.com/gravins/NumGraph/blob/main/img/NumGraph_logo.svg" />
+  <img width="30%" src="https://github.com/gravins/NumGraph/blob/main/docs/source/_static/img/NumGraph_logo.svg" />
 </p>
 
 
 # NumGraph
-Numpy library for synthetic graph generation.
+**Num(py)Graph** is a library for synthetic graph generation. The main principle of NumGraph is to be a lightweight library (i.e., ``numpy`` is the only dependency) that generates graphs from a broad range of distributions. Indeed, It implements several graph distributions in both the static and temporal domain. 
+
 
 ## Implemented distributions
 ### Static Graphs

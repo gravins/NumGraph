@@ -57,18 +57,18 @@ def random_tree_coo(num_nodes: int,
     Parameters
     ----------
     num_nodes : int
-        [description]
+        The number of nodes in the tree
     directed : bool, optional
-        If set to True, will return a directed graph, by default True
+        If set to :obj:`True`, will return a directed graph, by default :obj:`True`
     weighted : bool, optional
-        If set to True, will return a dense representation of the weighted graph, by default False
+        If set to :obj:`True`, will return a dense representation of the weighted graph, by default :obj:`False`
     rng : Optional[Generator], optional
-        Numpy random number generator, by default None
+        Numpy random number generator, by default :obj:`None`
 
     Returns
     -------
     NDArray
-        The random tree in COO representation (num_edges x 2)
+        The random tree in COO representation :obj:`(num_edges x 2)`
     Optional[NDArray]
         Weights of the random graph.
     """
@@ -89,18 +89,18 @@ def random_tree_full(num_nodes: int,
     Parameters
     ----------
     num_nodes : int
-        [description]
+        The number of nodes in the tree
     directed : bool, optional
-        If set to True, will return a directed graph, by default True
+        If set to :obj:`True`, will return a directed graph, by default :obj:`True`
     weighted : bool, optional
-        If set to True, will return a dense representation of the weighted graph, by default False
+        If set to :obj:`True`, will return a dense representation of the weighted graph, by default :obj:`False`
     rng : Optional[Generator], optional
-        Numpy random number generator, by default None
+        Numpy random number generator, by default :obj:`None`
 
     Returns
     -------
     NDArray
-        The random tree in matrix representation (num_edges x 2)
+        The random tree in matrix representation :obj:`(num_edges x 2)`
     """
 
     coo_matrix, weights = _random_tree(num_nodes = num_nodes,

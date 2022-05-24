@@ -37,16 +37,16 @@ def star_full(num_nodes: int,
     num_nodes : int
         The number of nodes
     directed : bool, optional
-        If set to True, will return a directed graph, by default False
+        If set to :obj:`True`, will return a directed graph, by default :obj:`False`
     weighted : bool, optional
-        If set to True, will return a dense representation of the weighted graph, by default False
+        If set to :obj:`True`, will return a dense representation of the weighted graph, by default :obj:`False`
     rng : Optional[Generator], optional
-        Numpy random number generator, by default None
+        Numpy random number generator, by default :obj:`None`
 
     Returns
     -------
     NDArray
-        The star graph in matrix representaion (num_nodes x num_nodes)
+        The star graph in matrix representaion :obj:`(num_nodes x num_nodes)`
     """
     coo_matrix, weights = _star(num_nodes=num_nodes, directed=directed, weighted=weighted, rng=rng)
 
@@ -69,16 +69,16 @@ def star_coo(num_nodes: int,
     num_nodes : int
         The number of nodes
     directed : bool, optional
-        If set to True, will return a directed graph, by default False
+        If set to :obj:`True`, will return a directed graph, by default :obj:`False`
     weighted : bool, optional
-        If set to True, will return a dense representation of the weighted graph, by default False
+        If set to :obj:`True`, will return a dense representation of the weighted graph, by default :obj:`False`
     rng : Optional[Generator], optional
-        Numpy random number generator, by default None
+        Numpy random number generator, by default :obj:`None`
 
     Returns
     -------
     NDArray
-        The star graph in COO representation (num_edges x 2)
+        The star graph in COO representation :obj:`(num_edges x 2)`
     Optional[NDArray]
         Weights of the random graph.
     """

@@ -77,32 +77,35 @@ def susceptible_infected_coo(generator: Callable,
     change its state to infected depending on the number of infected neighbors and a fixed 
     probability. When a node change its state, it stays infected indefinitely. 
     The disseminaiton process is defined on discrite time, and last until each node is infected or
-    t_max is reached. The simulation graph has fixed nodes and dynamic edges along the temporal axis.
+    :obj:`t_max` is reached. The simulation graph has fixed nodes and dynamic edges along the temporal axis.
 
     Parameters
     ----------
     generator : Callable
         A callable that takes as input a rng and generates the simulation graph
-        NOTE: The weights are not used by the model
     prob : float, optional
-        The probability of infection, by default 0.5
+        The probability of infection, by default :obj:`0.5`
     mask_size : float, optional
-        The amount of edges to discard at each timestep, by default 0.5
+        The amount of edges to discard at each timestep, by default :obj:`0.5`
     t_max : int, optional
-        The maximum number of timesteps in the simulation, by default None
+        The maximum number of timesteps in the simulation, by default :obj:`None`
     infected_nodes : Union[int, float], optional
-        The amount of starting infected nodes, by default 0.1
+        The amount of starting infected nodes, by default :obj:`0.1`
     num_nodes : int, optional
-        The number of nodes in the simulation graph, by default None
+        The number of nodes in the simulation graph, by default :obj:`None`
     rng : Generator, optional
-        Numpy random number generator, by default None
+        Numpy random number generator, by default :obj:`None`
 
     Returns
     -------
-    Tuple
-        The susceptible-infected DPS. The tuple contains 2 elements:
-        - the list of graph's snapshots in COO representation (T x (snapshot_num_edges x 2))
-        - the list of nodes' states (T x (num_nodes, ))
+    List[NDArray]
+        The list of graph's snapshots in COO representation :obj:`(T x (snapshot_num_edges x 2))`
+    List[NDArray]
+        The list of nodes' states :obj:`(T x (num_nodes, ))`
+
+    Note
+    ----
+        The weights computed by the :obj:`generator` are not used by the function
     """
     return  _susceptible_infected(generator = generator, 
                                   prob = prob,
@@ -123,7 +126,7 @@ def susceptible_infected_full(generator: Callable,
                              rng: Optional[Generator] = None) -> Tuple[List[NDArray], List[NDArray]]:
     """
     Returns Dissemination Process Simulation (DPS). The model simulates a susceptible-infected scenario,
-    e.g., epidemic spreading. Each node can be either infected (1) or susceptible (0). A node can
+    e.g., epidemic spreading. Each node can be either infected :obj:`(1)` or susceptible :obj:`(0)`. A node can
     change its state to infected depending on the number of infected neighbors and a fixed 
     probability. When a node change its state, it stays infected indefinitely. 
     The disseminaiton process is defined on discrite time, and last until each node is infected or
@@ -133,26 +136,30 @@ def susceptible_infected_full(generator: Callable,
     ----------
     generator : Callable
         A callable that takes as input a rng and generates the simulation graph
-        NOTE: The weights are not used by the model
     prob : float, optional
-        The probability of infection, by default 0.5
+        The probability of infection, by default :obj:`0.5`
     mask_size : float, optional
-        The amount of edges to discard at each timestep, by default 0.5
+        The amount of edges to discard at each timestep, by default :obj:`0.5`
     t_max : int, optional
-        The maximum number of timesteps in the simulation, by default None
+        The maximum number of timesteps in the simulation, by default :obj:`None`
     infected_nodes : Union[int, float], optional
-        The amount of starting infected nodes, by default 0.1
+        The amount of starting infected nodes, by default :obj:`0.1`
     num_nodes : int, optional
-        The number of nodes in the simulation graph, by default None
+        The number of nodes in the simulation graph, by default :obj:`None`
     rng : Generator, optional
-        Numpy random number generator, by default None
+        Numpy random number generator, by default :obj:`None`
 
     Returns
     -------
-    Tuple
-        The susceptible-infected DPS. The tuple contains 2 elements:
-        - the list of graph's snapshots in matrix represnetation (T x (num_nodes x num_nodes))
-        - the list of nodes' states (T x (num_nodes, ))
+    List[NDArray]
+        The list of graph's snapshots in matrix represnetation :obj:`(T x (num_nodes x num_nodes))`
+    List[NDArray]
+        The list of nodes' states :obj:`(T x (num_nodes, ))`
+
+    Note
+    ----
+        The weights computed by the :obj:`generator` are not used by the function
+
     """
     edges_snapshots_coo, nodes_snapshots =  _susceptible_infected(generator = generator, 
                                                                   prob = prob,

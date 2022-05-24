@@ -46,7 +46,7 @@ def barabasi_albert_coo(num_nodes: int,
                         rng: Optional[Generator] = None) -> Tuple[NDArray, Optional[NDArray]]:
     """
     Returns a graph sampled from the Barabasi-Albert (BA) model. The graph is built
-    incrementally by adding `num_edges` arcs from a new node to already existing ones with
+    incrementally by adding :obj:`num_edges` arcs from a new node to already existing ones with
     preferential attachment towards nodes with high degree.
 
     Parameters
@@ -56,14 +56,14 @@ def barabasi_albert_coo(num_nodes: int,
     num_edges : int
         The number of edges
     weighted : bool, optional
-        If set to True, will return a dense representation of the weighted graph, by default False
+        If set to :obj:`True`, will return a dense representation of the weighted graph, by default :obj:`False`
     rng : Optional[Generator], optional
-        Numpy random number generator, by default None
+        Numpy random number generator, by default :obj:`None`
 
     Returns
     -------
     NDArray
-        The Barabasi-Albert graph in COO representation (num_edges x 2)
+        The Barabasi-Albert graph in COO representation :obj:`(num_edges x 2)`
     Optional[NDArray]
         Weights of the random graph.
     """
@@ -98,14 +98,14 @@ def barabasi_albert_full(num_nodes: int,
     num_edges : int
         The number of edges
     weighted : bool, optional
-        If set to True, will return a dense representation of the weighted graph, by default False
+        If set to :obj:`True`, will return a dense representation of the weighted graph, by default :obj:`False`
     rng : Optional[Generator], optional
-        Numpy random number generator, by default None
+        Numpy random number generator, by default :obj:`None`
 
     Returns
     -------
     NDArray
-        The Barabasi-Albert graph in matrix representation (num_nodes x num_nodes)
+        The Barabasi-Albert graph in matrix representation :obj:`(num_nodes x num_nodes)`
     """
 
     adj_matrix, weights = _barabasi_albert(num_nodes=num_nodes, 

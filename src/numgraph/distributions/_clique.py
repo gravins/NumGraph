@@ -30,14 +30,14 @@ def clique_full(num_nodes: int,
     num_nodes : int
         The number of nodes
     weighted : bool, optional
-        If set to True, will return a dense representation of the weighted graph, by default False
+        If set to :obj:`True`, will return a dense representation of the weighted graph, by default :obj:`False`
     rng : Optional[Generator], optional
-        Numpy random number generator, by default None
+        Numpy random number generator, by default :obj:`None`
 
     Returns
     -------
     NDArray
-        The clique in matrix representation (num_nodes x num_nodes)
+        The clique in matrix representation :obj:`(num_nodes x num_nodes)`
     """
     adj_matrix, weights = _clique(num_nodes=num_nodes, weighted=weighted, rng=rng)
 
@@ -57,14 +57,14 @@ def clique_coo(num_nodes: int,
     num_nodes : int
         The number of nodes
     weighted : bool, optional
-        If set to True, will return a dense representation of the weighted graph, by default False
+        If set to :obj:`True`, will return a dense representation of the weighted graph, by default :obj:`False`
     rng : Optional[Generator], optional
-        Numpy random number generator, by default None
+        Numpy random number generator, by default :obj:`None`
 
     Returns
     -------
     NDArray
-        The clique in COO representation (num_edges x 2)
+        The clique in COO representation :obj:`(num_edges x 2)`
     Optional[NDArray]
         Weights of the random graph.
     """

@@ -65,7 +65,7 @@ def heat_graph_diffusion_coo(generator: Callable,
     """
     Returns heat diffusion over a graph. The model simulates the diffusion of heat on a given graph
     through the graph heat equation. Each node is characterized by the temperature. 
-    The process is defined on discrite time, and last until t_max time is reached. 
+    The process is defined on discrite time, and last until :obj:`t_max` time is reached. 
     The simulation graph has fixed nodes and edges along the temporal axis.
 
     Parameters
@@ -73,25 +73,25 @@ def heat_graph_diffusion_coo(generator: Callable,
     generator : Callable
         A callable that takes as input a rng and generates the simulation graph
     spike_generator : SpikeGenerator
-        The spike generator, which implement the method compute_spike
+        The spike generator, which implement the method :obj:`compute_spike(t, x)`
     t_max : int, optional
-        The maximum number of timesteps in the simulation, by default 10
+        The maximum number of timesteps in the simulation, by default :obj:`10`
     init_temp : float, optional
-        The initial temperature of the nodes. If None it computes a random temperature between 0. and 0.2, by default None
-    ste_size : float, optional
-        The step size used in the Euler's method discretization, by default 0.1
+        The initial temperature of the nodes. If :obj:`None` it computes a random temperature between :obj:`0.` and :obj:`0.2`, by default :obj:`None`
+    step_size : float, optional
+        The step size used in the Euler's method discretization, by default :obj:`0.1`
     num_nodes : int, optional
-        The number of nodes in the simulation graph, by default None
+        The number of nodes in the simulation graph, by default :obj:`None`
     rng : Generator, optional
-        Numpy random number generator, by default None
+        Numpy random number generator, by default :obj:`None`
 
     Returns
     -------
-    Tuple
-        The heat diffusion over the graph. The tuple contains 2 elements:
-        - the list of graph's snapshots (T x 2): each snapshot is a tuple containing the 
-           graph in COO representation (snapshot_num_edges x 2) and the weights (snapshot_num_edges x 1)
-        - the list of nodes' states (T x (snapshot_num_nodes, ))
+    List[Tuple[NDArray, NDArray]]
+        The list of graph's snapshots :obj:`(T x 2)`: each snapshot is a tuple containing the graph 
+        in COO representation :obj:`(snapshot_num_edges x 2)` and the weights :obj:`(snapshot_num_edges x 1)`
+    List[NDArray]
+        The list of nodes' states :obj:`(T x (snapshot_num_nodes, ))`
     """
     return _heat_graph_diffusion(generator = generator,  
                                  spike_generator = spike_generator,
@@ -121,24 +121,24 @@ def heat_graph_diffusion_full(generator: Callable,
     generator : Callable
         A callable that takes as input a rng and generates the simulation graph
     spike_generator : SpikeGenerator
-        The spike generator, which implement the method compute_spike
+        The spike generator, which implement the method :obj:`compute_spike(t,x)`
     t_max : int, optional
-        The maximum number of timesteps in the simulation, by default 10
+        The maximum number of timesteps in the simulation, by default :obj:`10`
     init_temp : float, optional
-        The initial temperature of the nodes. If None it computes a random temperature between 0. and 0.2, by default None
-    ste_size : float, optional
-        The step size used in the Euler's method discretization, by default 0.1
+        The initial temperature of the nodes. If :obj:`None` it computes a random temperature between :obj:`0.` and :obj:`0.2`, by default :obj:`None`
+    step_size : float, optional
+        The step size used in the Euler's method discretization, by default :obj:`0.1`
     num_nodes : int, optional
-        The number of nodes in the simulation graph, by default None
+        The number of nodes in the simulation graph, by default :obj:`None`
     rng : Generator, optional
-        Numpy random number generator, by default None
+        Numpy random number generator, by default :obj:`None`
 
     Returns
     -------
-    Tuple
-        The heat diffusion over the graph. The tuple contains 2 elements:
-        - the list of graph's snapshots in matrix representation (T x (num_nodes x num_nodes))
-        - the list of nodes' states (T x (num_nodes, ))
+    List[NDArray]
+        the list of graph's snapshots in matrix representation :obj:`(T x (num_nodes x num_nodes))`
+    List[NDArray]
+        the list of nodes' states :obj:`(T x (num_nodes, ))`
     """
     return _heat_graph_diffusion(generator = generator,  
                                  spike_generator = spike_generator,

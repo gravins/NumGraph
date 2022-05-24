@@ -11,14 +11,14 @@ def to_dense(edge_list: NDArray, num_nodes: int = None) -> NDArray:
     Parameters
     ----------
     edge_list : NDArray
-        The list of edges (num_edges x 2)
+        The list of edges :obj:`(num_edges x 2)`
     num_nodes : int, optional
-        The number of nodes in the graph, by default None
+        The number of nodes in the graph, by default :obj:`None`
 
     Returns
     -------
     NDArray
-        The squared adjacency matrix (num_nodes x num_nodes)
+        The squared adjacency matrix :obj:`(num_nodes x num_nodes)`
     """
     if not num_nodes:
         num_nodes = np.max(edge_list) + 1
@@ -39,12 +39,12 @@ def to_sparse(adj_matrix: NDArray) -> NDArray:
     Parameters
     ----------
     adj_matrix : NDArray
-        The squared adjacency matrix (num_nodes x num_nodes)
+        The squared adjacency matrix :obj:`(num_nodes x num_nodes)`
 
     Returns
     -------
     NDArray
-        The list of edges (num_edges x 2)
+        The list of edges :obj:`(num_edges x 2)`
     """
 
     return np.argwhere(adj_matrix > 0)
@@ -56,13 +56,13 @@ def to_undirected(adj: NDArray) -> NDArray:
 
     Parameters
     ----------
-    edge_list : NDArray
-        A directed adjacency matrix (num_nodes x num_nodes), or edge list (num_edges x 2)
+    adj : NDArray
+        A directed adjacency matrix :obj:`(num_nodes x num_nodes)`, or edge list :obj:`(num_edges x 2)`
 
     Returns
     -------
     NDArray
-        An undirected adjacency matrix (num_nodes x num_nodes), or the edge list ((2*num_edges) x 2)
+        An undirected adjacency matrix :obj:`(num_nodes x num_nodes)`, or the edge list :obj:`((2*num_edges) x 2)`
     """
     row, col = adj.shape
 
@@ -86,12 +86,12 @@ def coalesce(edge_list: NDArray) -> NDArray:
     Parameters
     ----------
     edge_list : NDArray
-        An edge list (num_edges x 2)
+        An edge list :obj:`(num_edges x 2)`
 
     Returns
     -------
     NDArray
-        A sorted edge list with no duplicated edges (new_num_edges x 2)
+        A sorted edge list with no duplicated edges :obj:`(new_num_edges x 2)`
     """
     return np.unique(edge_list, axis=0)
 
@@ -103,15 +103,15 @@ def unsorted_coalesce(edge_list: NDArray, weights: Optional[NDArray] = None) -> 
     Parameters
     ----------
     edge_list : NDArray
-        An edge list (num_edges x 2)
+        An edge list :obj:`(num_edges x 2)`
     weights : NDArray
-        The weights (num_edges x 1)
+        The weights :obj:`(num_edges x 1)`
     Returns
     -------
     NDArray
-        An unsorted edge list with no duplicated edges (new_num_edges x 2)
+        An unsorted edge list with no duplicated edges :obj:`(new_num_edges x 2)`
     NDArray
-        The unsorted weigths associated to the new edge list (new_num_edges x 1)
+        The unsorted weigths associated to the new edge list :obj:`(new_num_edges x 1)`
     """
     indexes = sorted(np.unique(edge_list, return_index=True, axis=0)[1])
     return edge_list[indexes], weights[indexes] if weights is not None else weights
@@ -129,7 +129,7 @@ def dense(generator):
     Returns
     -------
     Callable
-        A callable that generates the squared adjacency matrix (num_nodes x num_nodes) of a graph
+        A callable that generates the squared adjacency matrix :obj:`(num_nodes x num_nodes)` of a graph
     """
     return lambda *args, **kwargs: to_dense(generator(*args, **kwargs))
 
@@ -141,17 +141,13 @@ def remove_self_loops(adj: NDArray) -> NDArray:
     Parameters
     ----------
     adj : NDArray
-        The adjancency matrix (num_nodes x num_nodes), or the edge_list (num_edges x 2)
+        The adjancency matrix :obj:`(num_nodes x num_nodes)`, or the edge_list :obj:`(num_edges x 2)`
 
     Returns
     -------
     NDAarray
-        The adjacency matrix (num_nodes x num_nodes), or the list of edges (new_num_edges x 2), 
+        The adjacency matrix :obj:`(num_nodes x num_nodes)`, or the list of edges :obj:`(new_num_edges x 2)`, 
         without self-loops.
-
-    Raises
-    ------
-    NotImplementedError
     """
     row, col = adj.shape
 

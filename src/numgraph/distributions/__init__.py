@@ -5,3 +5,22 @@ from ._clique import clique_coo, clique_full
 from ._grid import grid_coo, grid_full, simple_grid_coo, simple_grid_full
 from ._random_tree import random_tree_coo, random_tree_full
 from ._star import star_coo, star_full
+
+__all__ = [
+    'erdos_renyi_coo',
+    'erdos_renyi_full',
+    'barabasi_albert_coo',
+    'barabasi_albert_full',
+    'stochastic_block_model_coo',
+    'stochastic_block_model_full',
+    'clique_coo',
+    'clique_full',
+    'grid_coo',
+    'grid_full',
+    'simple_grid_coo',
+    'simple_grid_full',
+    'random_tree_coo',
+    'random_tree_full',
+    'star_coo',
+    'star_full',
+]

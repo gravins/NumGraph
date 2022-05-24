@@ -82,25 +82,28 @@ def stochastic_block_model_coo(block_sizes: List[int],
     block_sizes : List[int]
         Sizes of blocks
     probs : List[List[float]]
-        The squared probability matrix (num_blocks x num_blocks).
-        The element i,j represents the edge probability between blocks i and j.
-        The element i,i define the edge probability inside block i.
+        The squared probability matrix :obj:`(num_blocks x num_blocks)`.
+        The element :obj:`i,j` represents the edge probability between blocks :obj:`i` and :obj:`j`.
+        The element :obj:`i,i` define the edge probability inside block :obj:`i`.
     generator : Callable
         A callable that generates communities with size depending on block_sizes
-        NOTE: The generator takes as input the block size, the probability, and the rng
     directed : bool, optional
-        If set to True, will return a directed graph, by default False
+        If set to :obj:`True`, will return a directed graph, by default :obj:`False`
     weighted : bool, optional
-        If set to True, will return a dense representation of the weighted graph, by default False
+        If set to :obj:`True`, will return a dense representation of the weighted graph, by default :obj:`False`
     rng : Generator, optional
-        Numpy random number generator, by default None
+        Numpy random number generator, by default :obj:`None`
 
     Returns
     -------
     NDArray
-        The stochastic block model graph in COO representation (num_edges x 2).
+        The stochastic block model graph in COO representation :obj:`(num_edges x 2)`.
     Optional[NDArray]
         Weights of the random graph.
+
+    Note
+    ----
+        The generator takes as input the block size, the probability, and the rng
     """
 
     coo_matrix, coo_weights = _stochastic_block_model(block_sizes=block_sizes,
@@ -130,23 +133,26 @@ def stochastic_block_model_full(block_sizes: List[int],
     block_sizes : List[int]
         Sizes of blocks
     probs : List[List[float]]
-        The squared probability matrix (num_blocks x num_blocks).
-        The element i,j represents the edge probability between blocks i and j.
-        The element i,i define the edge probability inside block i.
+        The squared probability matrix :obj:`(num_blocks x num_blocks)`.
+        The element :obj:`i,j` represents the edge probability between blocks :obj:`i` and :obj:`j`.
+        The element :obj:`i,i` define the edge probability inside block :obj:`i`.
     generator : Callable
         A callable that generates communities with size depending on block_sizes
-        NOTE: The generator takes as input the block size, the probability, and the rng
     directed : bool, optional
-        If set to True, will return a directed graph, by default False
+        If set to :obj:`True`, will return a directed graph, by default :obj:`False`
     weighted : bool, optional
-        If set to True, will return a dense representation of the weighted graph, by default False
+        If set to :obj:`True`, will return a dense representation of the weighted graph, by default :obj:`False`
     rng : Generator, optional
-        Numpy random number generator, by default None
+        Numpy random number generator, by default :obj:`None`
 
     Returns
     -------
     NDArray
-        The stochastic block model graph in matrix representation (num_nodes x num_nodes).
+        The stochastic block model graph in matrix representation :obj:`(num_nodes x num_nodes)`.
+
+    Note
+    ----
+        The generator takes as input the block size, the probability, and the rng
     """
 
     coo_matrix, weights = _stochastic_block_model(block_sizes=block_sizes,

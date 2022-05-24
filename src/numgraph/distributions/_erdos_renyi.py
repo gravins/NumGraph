@@ -48,16 +48,16 @@ def erdos_renyi_coo(num_nodes: int,
     prob : float
         Probability of an edge
     directed : bool, optional
-        If set to True, will return a directed graph, by default False
+        If set to :obj:`True`, will return a directed graph, by default :obj:`False`
     weighted : bool, optional
-        If set to True, will return a dense representation of the weighted graph, by default False
+        If set to :obj:`True`, will return a dense representation of the weighted graph, by default :obj:`False`
     rng : Generator, optional
-        Numpy random number generator, by default None
+        Numpy random number generator, by default :obj:`None`
 
     Returns
     -------
     NDArray
-        The random graph in COO representation (num_edges x 2).
+        The random graph in COO representation :obj:`(num_edges x 2)`.
     Optional[NDArray]
         Weights of the random graph.
     """
@@ -93,16 +93,16 @@ def erdos_renyi_full(num_nodes: int,
     prob : float
         Probability of an edge
     directed : bool, optional
-        If set to True, will return a directed graph, by default False
+        If set to :obj:`True`, will return a directed graph, by default :obj:`False`
     weighted : bool, optional
-        If set to True, will return a dense representation of the weighted graph, by default False
+        If set to :obj:`True`, will return a dense representation of the weighted graph, by default :obj:`False`
     rng : Generator, optional
-        Numpy random number generator, by default None
+        Numpy random number generator, by default :obj:`None`
 
     Returns
     -------
     NDArray
-        The random graph in matrix representation (num_nodes x num_nodes).
+        The random graph in matrix representation :obj:`(num_nodes x num_nodes)`.
     """
     adj_matrix, weights = _erdos_renyi(num_nodes=num_nodes,
                                        prob=prob,
