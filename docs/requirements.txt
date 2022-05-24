@@ -9,3 +9,4 @@ seaborn
 tqdm
 numpy
 python-louvain
+numgraph
