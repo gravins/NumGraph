@@ -7,6 +7,8 @@
 
 
 # NumGraph
+#### Read the [Documentation](https://numgraph.readthedocs.io/en/latest/index.html)
+
 **Num(py)Graph** is a library for synthetic graph generation. The main principle of NumGraph is to be a lightweight library (i.e., ``numpy`` is the only dependency) that generates graphs from a broad range of distributions. Indeed, It implements several graph distributions in both the static and temporal domain. 
 
 
