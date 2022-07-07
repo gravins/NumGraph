@@ -22,7 +22,8 @@
 
 ### Temporal Graphs
 - Susceptible-Infected Dissemination Process Simulation
-- Heat diffusion over a graph
+- Heat diffusion over a graph (closed form solution)
+- Generic Euler's method approximation of a diffusion process over a graph
 
 ## Installation
 
