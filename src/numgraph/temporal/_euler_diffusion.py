@@ -81,8 +81,9 @@ def euler_graph_diffusion_coo(generator: Callable,
     spike_generator : SpikeGenerator
         The spike generator, which implement the method :obj:`compute_spike(t, x)`
     diffusion: Callable, optional
-        The diffusion equation. If :obj:`None` it computes the standard graph heat 
-        equation, ie, -Lx(t), where L is the graph laplacian. By default :obj:`None`
+        The function that implements the diffusion equation. It takes as input the result of the 
+        :obj`generator`, :obj`num_nodes`, and nodes' states. If :obj:`None` it computes the standard 
+        graph heat equation, ie, -Lx(t), where L is the graph laplacian. By default :obj:`None`
     t_max : int, optional
         The maximum number of timesteps in the simulation, by default :obj:`10`
     init_temp : Union[float, NDArray], optional
@@ -134,8 +135,9 @@ def euler_graph_diffusion_full(generator: Callable,
     spike_generator : SpikeGenerator
         The spike generator, which implement the method :obj:`compute_spike(t, x)`
     diffusion: Callable, optional
-        The diffusion equation. If :obj:`None` it computes the standard graph heat 
-        equation, ie, -Lx(t), where L is the graph laplacian. By default :obj:`None`
+        The function that implements the diffusion equation. It takes as input the result of the 
+        :obj`generator`, :obj`num_nodes`, and nodes' states. If :obj:`None` it computes the standard 
+        graph heat equation, ie, -Lx(t), where L is the graph laplacian. By default :obj:`None`
     t_max : int, optional
         The maximum number of timesteps in the simulation, by default :obj:`10`
     init_temp : Union[float, NDArray], optional
