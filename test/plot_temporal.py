@@ -31,13 +31,46 @@ for edge_list, x in zip(snapshots, xs):
     plt.clf() 
 plt.close()
 
-# Heat Diffusion simulation
-print('Heat diffusion')
+# Heat Diffusion simulation (Euler's method)
+print("Euler's method heat diffusion")
 h, w = 3, 3
 generator = lambda _: simple_grid_coo(h,w, directed=False)
 t_max = 150
 spikegen = ColdHeatSpikeGenerator(t_max=t_max, prob_cold_spike=0.5, num_spikes=10)
-snapshots, xs = heat_graph_diffusion_coo(generator, spikegen, t_max=t_max, num_nodes=h*w)
+snapshots, xs = euler_graph_diffusion_coo(generator, spikegen, diffusion=None, t_max=t_max, num_nodes=h*w)
+
+dh = DynamicHeatmap(xs=xs, shape=(h,w), annot=True)
+dh.animate()
+#plt.show()
+f = "./EulerDynamicHeatmap.mp4" 
+writervideo = animation.FFMpegWriter(fps=5) 
+dh.anim.save(f, writer=writervideo)
+
+
+dh = DynamicHeatGraph(edges=snapshots, xs=xs, layout=lambda G: nx.spring_layout(G, iterations=100, seed=9))
+dh.animate()
+#plt.show()
+f = "./EulerDynamicGraph.mp4" 
+writervideo = animation.FFMpegWriter(fps=5) 
+dh.anim.save(f, writer=writervideo)
+
+
+dh = DynamicNodeSignal(xs=xs)
+dh.animate()
+#plt.show()
+f = "./EulerDynamicNodesignal.mp4" 
+writervideo = animation.FFMpegWriter(fps=5) 
+dh.anim.save(f, writer=writervideo)
+
+
+
+# Heat Diffusion simulation (Closed form solution)
+print("Closed form solution heat diffusion")
+h, w = 3, 3
+generator = lambda _: simple_grid_coo(h,w, directed=False)
+t_max = 150
+timestamps = [0.01 * i for i in range(100)]
+snapshots, xs = heat_graph_diffusion_coo(generator, timestamps, num_nodes=h*w)
 
 dh = DynamicHeatmap(xs=xs, shape=(h,w), annot=True)
 dh.animate()
