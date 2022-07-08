@@ -51,12 +51,16 @@ def _euler_graph_diffusion(generator: Callable,
         
         # Graph Heat Equation (Euler's method)
         xs.append(x)
-        x = x + step_size * diffusion(edges, num_nodes, x)
+        x = x + step_size * diffusion(edges, weights, num_nodes, x)
 
     if return_coo:
         return [(edges, weights)] * t_max, xs
     else:
-        adj_mat += self_loops 
+        if diffusion is None:
+            adj_mat += self_loops 
+        else:
+            adj_mat = np.zeros((num_nodes, num_nodes))
+            adj_mat[edges[:, 0], edges[:, 1]] = 1 if weights is None else weights
         return [adj_mat] * t_max, xs
 
 
@@ -81,9 +85,11 @@ def euler_graph_diffusion_coo(generator: Callable,
     spike_generator : SpikeGenerator
         The spike generator, which implement the method :obj:`compute_spike(t, x)`
     diffusion: Callable, optional
-        The function that implements the diffusion equation. It takes as input the result of the 
-        :obj:`generator`, :obj:`num_nodes`, and nodes' states. If :obj:`None` it computes the standard 
-        graph heat equation, ie, -Lx(t), where L is the graph laplacian. By default :obj:`None`
+        The function that implements the diffusion equation. It takes as input the graph snapshot in
+        COO representation, the number of nodes, and nodes' states. In other words,the arguments of
+        the diffusion function are :obj:`edges`, :obj:`weights`, :obj:`num_nodes`, :obj:`x`. 
+        If :obj:`None` it computes the standard graph heat equation, ie, -Lx(t), where L is the 
+        graph laplacian. By default :obj:`None`
     t_max : int, optional
         The maximum number of timesteps in the simulation, by default :obj:`10`
     init_temp : Union[float, NDArray], optional
@@ -135,9 +141,11 @@ def euler_graph_diffusion_full(generator: Callable,
     spike_generator : SpikeGenerator
         The spike generator, which implement the method :obj:`compute_spike(t, x)`
     diffusion: Callable, optional
-        The function that implements the diffusion equation. It takes as input the result of the 
-        :obj:`generator`, :obj:`num_nodes`, and nodes' states. If :obj:`None` it computes the standard 
-        graph heat equation, ie, -Lx(t), where L is the graph laplacian. By default :obj:`None`
+        The function that implements the diffusion equation. It takes as input the graph snapshot in
+        COO representation, the number of nodes, and nodes' states. In other words,the arguments of
+        the diffusion function are :obj:`edges`, :obj:`weights`, :obj:`num_nodes`, :obj:`x`. 
+        If :obj:`None` it computes the standard graph heat equation, ie, -Lx(t), where L is the 
+        graph laplacian. By default :obj:`None`
     t_max : int, optional
         The maximum number of timesteps in the simulation, by default :obj:`10`
     init_temp : Union[float, NDArray], optional
