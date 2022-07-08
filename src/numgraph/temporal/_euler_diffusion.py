@@ -43,7 +43,7 @@ def _euler_graph_diffusion(generator: Callable,
         degree = np.diag(np.sum(adj_mat, axis=1))
         new_degree = np.linalg.inv(np.sqrt(degree))
         L = np.eye(num_nodes) - new_degree @ adj_mat @ new_degree # Normalized laplacian
-        diffusion = lambda _edges, _num_nodes, _x: -L @ _x
+        diffusion = lambda _edges, _weights, _num_nodes, _x: -L @ _x
 
     xs = []
     for t in range(t_max):
