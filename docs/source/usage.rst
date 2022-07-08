@@ -75,7 +75,7 @@ Moreover, we need to identify the probability matrix:
 Heat Diffusion simulation
 -------------------------
 
-Similarly to the SBM generation, even the temporal distribution require the definition of a generator to compute the employed graph. In the case of the heat diffusion simulation it also important to define a ``SpikeGenerator``, which specifies how heat spikes are generated over time.
+Similarly to the SBM generation, even the temporal distribution require the definition of a generator to compute the employed graph. In the case of the heat diffusion simulation leveraging the Euler's method, it is also important to define a ``SpikeGenerator``, which specifies how heat spikes are generated over time.
 
 
 .. code:: python
@@ -83,14 +83,14 @@ Similarly to the SBM generation, even the temporal distribution require the defi
 
    >>> from numgraph import simple_grid_coo
    >>> from numgraph.utils.spikes_generator import ColdHeatSpikeGenerator
-   >>> from numgraph.temporal import heat_graph_diffusion_coo
+   >>> from numgraph.temporal import euler_graph_diffusion_coo
    
    >>> h, w = 3, 3
    >>> generator = lambda _: simple_grid_coo(h, w, directed=False)
    >>> t_max = 150
     
    >>> spikegen = ColdHeatSpikeGenerator(t_max=t_max, prob_cold_spike=0.5, num_spikes=10)
-   >>> snapshots, xs = heat_graph_diffusion_coo(generator, spikegen, t_max=t_max, num_nodes=h*w)
+   >>> snapshots, xs = euler_graph_diffusion_coo(generator, spikegen, t_max=t_max, num_nodes=h*w)
    >>> print(snapshots[0]) # the topology of the graph at time 0
    array([[0., 1., 0., 1., 0., 0., 0., 0., 0.],
           [1., 0., 1., 0., 1., 0., 0., 0., 0.],
