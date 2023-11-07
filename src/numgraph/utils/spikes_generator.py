@@ -197,7 +197,7 @@ class ColdHeatSpikeGenerator(SpikeGenerator):
             Numpy random number generator, by default :obj:`None`
         """
         super().__init__(t_max, heat_spike, num_spikes, rng)
-        assert prob_cold_spike > 0 and prob_cold_spike < 1, 'prob_cold_spike if a probability in the range (0, 1)'  
+        assert prob_cold_spike >= 0 and prob_cold_spike < 1, 'prob_cold_spike is a probability in the range [0, 1)'  
         
         self.cold_spike = cold_spike
         self.prob_cold_spike = prob_cold_spike
